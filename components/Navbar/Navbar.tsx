@@ -9,7 +9,7 @@ export const Navbar: FC = () => {
             <div className="flex gap-4">
                 <Link href={"/Portfolio"}><span>Portfolio</span></Link>
                 <Link href={"/Resume"}><span>Resume</span></Link>
-                <Link href={"/Portfolio"}><span>Contact</span></Link>
+                <Link href={"/Contact"}><span>Contact</span></Link>
             </div>
         </div>
     );

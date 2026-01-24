@@ -5,7 +5,7 @@ import { WorkEx } from "@/sections/Resume/WorkEx";
 import Link from "next/link";
 import { FC } from "react";
 import dynamic from "next/dynamic";
-const Wall = dynamic(() => import('@/components/TextAnimations/wall'), { ssr: false });
+const Wall = dynamic(() => import('@/components/TextAnimations/Wall'), { ssr: false });
 
 export default function Page() {
   return (
