@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-/smtp-backend/node_modules
+/smtp-backend
 
 # testing
 /coverage
