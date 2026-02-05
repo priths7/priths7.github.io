@@ -64,7 +64,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
             <div className="flex flex-row mt-4 gap-4 flex-wrap">
             {
               stacks?.map((stack: string) => {
-                return <Pill text={stack}/>
+                return <Pill text={stack} key={stack}/>
               })
             }
             </div>
