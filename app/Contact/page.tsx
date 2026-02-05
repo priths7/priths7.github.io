@@ -1,14 +1,17 @@
 "use client";
 import { Navbar } from "@/components/Navbar/Navbar";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useState } from "react"; import type { FormProps } from 'antd';
+import { Button, Checkbox, Form, Input } from 'antd';
+import TextArea from "antd/es/input/TextArea";
+import { FormInput } from "@/components/Inputs/FormInput";
+import { debug } from "console";
 const Wall = dynamic(() => import('@/components/TextAnimations/Wall'), { ssr: false });
 
 export default function Page() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        subject: '',
         message: ''
     });
 
@@ -20,7 +23,6 @@ export default function Page() {
     };
 
     const handleSubmit = async (e: any) => {
-        e.preventDefault();
         setLoading(true);
         setStatus({ type: '', message: '' });
 
@@ -37,10 +39,11 @@ export default function Page() {
 
             if (data.success) {
                 setStatus({ type: 'success', message: data.message });
-                setFormData({ name: '', email: '', subject: '', message: '' });
+                setFormData({ name: '', email: '', message: '' });
             } else {
                 setStatus({ type: 'error', message: data.message });
             }
+
         } catch (error) {
             setStatus({
                 type: 'error',
@@ -58,61 +61,53 @@ export default function Page() {
         <div className="min-h-screen bg-cover bg-center">
             <Navbar />
             <Wall />
-            <div className="container mx-auto lg:pt-24">
+            <div className="container mx-auto lg:pt-20">
                 <div className="w-full flex flex-col justify-center items-center">
-                    {/* <span className="font-poppins font-light text-white md:text-[28px] md:leading-[34.13px] xs:text-[24px] xs:leading-[29.26px] text-center">is very simple</span> */}
-                    <form onSubmit={handleSubmit} className="flex flex-col w-full items-center mt-10">
-                        <span className="font-poppins font-bold text-white text-center">Fell free to get in touch</span>
-                        <div className="form-group">
-                            <label htmlFor="name">Name *</label>
-                            <input
-                                className="flex-1 bg-transparent regField  border-white border-2 text-white rounded-[40px] xs:w-[300px] md:w-[350px] p-[13px]"
-                                type="text"
-                                id="name"
+                    <Form onFinish={handleSubmit} className="flex flex-col w-full items-center mt-10" layout="vertical">
+                        <span className="text-3xl font-poppins font-bold text-white text-center mb-12">Fell free to get in touch</span>
+                        <Form.Item
+                            label={<label className="font-poppins text-white">Name</label>}
+                            name="name"
+                            rules={[{ required: true, message: 'Please enter your name' }]}
+
+                        >
+                            <FormInput
+                                type="input"
                                 name="name"
+                                placeholder="Name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                required
                             />
-                        </div>
+                        </Form.Item>
+                        <Form.Item
+                            label={<label className="text-white ">Email</label>}
+                            name="email"
+                            rules={[{ required: true, message: 'Please enter your email' }]}
 
-                        <div className="form-group">
-                            <label htmlFor="email">Email *</label>
-                            <input
-                                className="flex-1 bg-transparent regField  border-white border-2 text-white rounded-[40px] xs:w-[300px] md:w-[350px] p-[13px]"
-                                type="email"
-                                id="email"
+                        >
+                            <FormInput
                                 name="email"
+                                type="input"
+                                placeholder="Email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                required
                             />
-                        </div>
+                        </Form.Item>
+                        <Form.Item
+                            label={<label className="text-white">Message</label>}
+                            name="message"
+                            rules={[{ required: true, message: 'Please enter your message' }]}
 
-                        <div className="form-group">
-                            <label htmlFor="subject">Subject</label>
-                            <input
-                                className="flex-1 bg-transparent regField  border-white border-2 text-white rounded-[40px] xs:w-[300px] md:w-[350px] p-[13px]"
-                                type="text"
-                                id="subject"
-                                name="subject"
-                                value={formData.subject}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="message">Message *</label>
-                            <textarea
-                                className="bg-transparent border-white border-2 rounded-[22px] resize-none text-white focus:border-[#715AFF] focus:outline-none font-poppins p-4 text-sm leading-[21px] regField"
-                                id="message"
+                        >
+                            <FormInput
                                 name="message"
+                                type="textarea"
+                                placeholder="Message"
                                 rows={3}
                                 value={formData.message}
                                 onChange={handleChange}
-                                required
                             />
-                        </div>
+                        </Form.Item>
 
                         {status.message && (
                             <div className={`alert alert-${status.type}`}>
@@ -120,10 +115,10 @@ export default function Page() {
                             </div>
                         )}
 
-                        <button type="submit" disabled={loading}>
+                        <Button type="primary" htmlType="submit" disabled={loading}>
                             {loading ? 'Sending...' : 'Send Message'}
-                        </button>
-                    </form>
+                        </Button>
+                    </Form>
                 </div>
 
             </div>
