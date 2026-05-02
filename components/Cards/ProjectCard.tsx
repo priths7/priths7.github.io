@@ -13,6 +13,7 @@ interface ProjectCardProps {
   desc: string;
   delay: number;
   stacks?: string[];
+  slug?: string;
 }
 
 export const ProjectCard: FC<ProjectCardProps> = ({
@@ -22,6 +23,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   desc,
   delay,
   stacks,
+  slug,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -45,7 +47,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
         }}
         transition={{ duration: 0.6 }} // Duration of the flip animation
       >
-        {/* Front side of the card */}
+        {/* Front */}
         <div
           className="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg"
           style={{ backfaceVisibility: "hidden" }} // Hide when flipped
@@ -60,19 +62,18 @@ export const ProjectCard: FC<ProjectCardProps> = ({
               backgroundPosition: "center bottom",
             }}
           >
-            <span className="mt-4 text-lg font-bold leading-tight text-white">{title}</span>
+            <span className="mt-4 text-lg font-bold leading-tight text-white">
+              {title}
+            </span>
             <div className="mt-4 flex flex-row flex-wrap gap-2 sm:gap-3">
-            {
-              stacks?.map((stack: string) => {
-                return <Pill text={stack} key={stack}/>
-              })
-            }
+              {stacks?.map((stack: string) => {
+                return <Pill text={stack} key={stack} />;
+              })}
             </div>
-            
           </div>
         </div>
 
-        {/* Back side of the card */}
+        {/* Back */}
         <div
           className="absolute inset-0 flex items-center justify-center bg-gray-100 transform rotate-y-180 rounded-lg"
           style={{ backfaceVisibility: "hidden" }} // Hide when flipped
@@ -93,6 +94,27 @@ export const ProjectCard: FC<ProjectCardProps> = ({
               </span>
               <br></br>
               <span className="text-sm leading-relaxed text-white">{desc}</span>
+            </div>
+            {/* Case study + external links */}
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              {slug && (
+                <Link
+                  href={`/projects/${slug}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1 rounded border border-[#0F0] px-3 py-1.5 text-xs font-semibold text-[#0F0] transition-colors hover:bg-[#0F0] hover:text-black"
+                >
+                  View Case Study →
+                </Link>
+              )}
+              <Link
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 rounded border border-white/40 px-3 py-1.5 text-xs font-semibold text-white/80 transition-colors hover:border-white hover:text-white"
+              >
+                Visit ↗
+              </Link>
             </div>
           </div>
         </div>
