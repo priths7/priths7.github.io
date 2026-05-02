@@ -64,7 +64,7 @@ export default function Page() {
             <div className="container mx-auto lg:pt-20">
                 <div className="w-full flex flex-col justify-center items-center">
                     <Form onFinish={handleSubmit} className="flex flex-col w-full items-center mt-10" layout="vertical">
-                        <span className="text-3xl font-poppins font-bold text-white text-center mb-12">Fell free to get in touch</span>
+                        <span className="text-3xl font-poppins font-bold text-white text-center mb-12">Feel free to get in touch</span>
                         <Form.Item
                             label={<label className="font-poppins text-white">Name</label>}
                             name="name"

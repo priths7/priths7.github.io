@@ -26,27 +26,27 @@ export const Details: FC = () => {
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10">
               <div className="flex flex-col items-center gap-4">
-                <img src="./code.svg" className="w-[50px] md:w-[60px]" />
+                <img src="/code.svg" className="w-[50px] md:w-[60px]" />
                 <span className="text-white text-center text-sm md:text-base">Programming Languages</span>
                 <span className="text-white text-center text-xs md:text-sm">
-                  Python, Kotlin, Java, Typescript, Javascript , MATLAB and R
+                  Rust, Scala, Python, Kotlin, Java, Typescript, Javascript , MATLAB and R
                   Programming.
                 </span>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <img src="./Database.svg" className="w-[50px] md:w-[60px]" />
+                <img src="/Database.svg" className="w-[50px] md:w-[60px]" />
                 <span className="text-white text-center text-sm md:text-base">RDBMS</span>
                 <span className="text-white text-center text-xs md:text-sm">
                   Postgresql, MySQL
                 </span>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <img src="./Cloud.svg" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
+                <img src="/Cloud.svg" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
                 <span className="text-white text-center text-sm md:text-base">Cloud Services</span>
                 <span className="text-white text-center text-xs md:text-sm">Google Cloud</span>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <img src="./Mobile.svg" className="w-[50px] md:w-[60px]" />
+                <img src="/Mobile.svg" className="w-[50px] md:w-[60px]" />
                 <span className="text-white text-center text-sm md:text-base">
                   Mobile Technologies
                 </span>
@@ -55,14 +55,14 @@ export const Details: FC = () => {
                 </span>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <img src="./Web_code.svg" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
+                <img src="/Web_code.svg" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
                 <span className="text-white text-center text-sm md:text-base">Web Technologies</span>
                 <span className="text-white text-center text-xs md:text-sm">
                   React, HTML & CSS, TailwindCSS, GSAP, Wordpress
                 </span>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <img src="./DevicesCode.svg" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
+                <img src="/DevicesCode.svg" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
                 <span className="text-white text-center text-sm md:text-base">Backend Services</span>
                 <span className="text-white text-center text-xs md:text-sm">
                   Nodejs, firebase, typeorm, express js

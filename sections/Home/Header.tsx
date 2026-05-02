@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 const Room = dynamic(() => import('@/components/TextAnimations/Room'), { ssr: false })
 
 export const Header: FC = () => {
-  const phrases = ["Full stack developer", "Based in chicago", "Open Source Enthusiast"];
+  const phrases = ["Full stack developer", "Master's student at DePaul", "Systems Architecture", "Software Engineering", "Artificial Intelligence"];
   return (
     <div className="relative h-[100%] w-[100%] flex flex-col items-center justify-center container px-[15px] mx-auto">
       <div className="absolute">
