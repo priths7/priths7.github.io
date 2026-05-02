@@ -19,7 +19,7 @@ export const FormInput: FC<FormInputProps> = ({ name, placeholder, value, onChan
             <Input
                 name={name}
                 placeholder={placeholder}
-                className="flex-1 border-white border-2 text-white rounded-[10px] xs:w-[300px] md:w-[350px] p-[13px] bg-transparent hover:bg-white hover:text-black focus:bg-white focus:text-black hover:border-black focus:border-black placeholder:text-gray-500"
+                className="w-full border-2 border-white bg-transparent p-[13px] text-white placeholder:text-gray-500 hover:border-black hover:bg-white hover:text-black focus:border-black focus:bg-white focus:text-black"
                 value={value}
                 onChange={onChange}
             />
@@ -31,7 +31,7 @@ export const FormInput: FC<FormInputProps> = ({ name, placeholder, value, onChan
                 name={name}
                 placeholder={placeholder}
                 rows={3}
-                className="flex-1 bg-transparent border-white border-2 text-white rounded-[10px] xs:w-[300px] md:w-[350px] p-[15px] hover:bg-white hover:text-black focus:bg-white focus:text-black hover:border-black focus:border-black placeholder:text-gray-500"
+                className="w-full border-2 border-white bg-transparent p-[15px] text-white placeholder:text-gray-500 hover:border-black hover:bg-white hover:text-black focus:border-black focus:bg-white focus:text-black"
                 value={value}
                 onChange={onChange}
             />

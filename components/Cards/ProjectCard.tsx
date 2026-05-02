@@ -32,7 +32,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
 
   return (
     <motion.div
-      className="w-full h-80 sm:h-96 perspective-1000 gap-4"
+      className="perspective-1000 h-72 w-full gap-4 sm:h-80 lg:h-96"
       onHoverStart={handleHoverStart}
       onHoverEnd={handleHoverEnd}
       onTap={handleTap}
@@ -51,17 +51,17 @@ export const ProjectCard: FC<ProjectCardProps> = ({
           style={{ backfaceVisibility: "hidden" }} // Hide when flipped
         >
           <div
-            className="w-full h-full rounded-lg flex flex-col items-start justify-end px-4 py-4 bg-gradient-to-b from-neutral-900 to-slate-50"
+            className="flex h-full w-full flex-col items-start justify-end rounded-lg bg-gradient-to-b from-neutral-900 to-slate-50 px-4 py-4"
             style={{
               backgroundImage: `linear-gradient(180deg,
                     rgba(0, 0, 0, 0),
                     rgba(0, 0, 0, 0.5)), url(${img})`,
-              backgroundSize: "100% 100%",
+              backgroundSize: "cover",
               backgroundPosition: "center bottom",
             }}
           >
-            <span className="text-lg font-bold mt-4 text-white">{title}</span>
-            <div className="flex flex-row mt-4 gap-4 flex-wrap">
+            <span className="mt-4 text-lg font-bold leading-tight text-white">{title}</span>
+            <div className="mt-4 flex flex-row flex-wrap gap-2 sm:gap-3">
             {
               stacks?.map((stack: string) => {
                 return <Pill text={stack} key={stack}/>
@@ -83,16 +83,16 @@ export const ProjectCard: FC<ProjectCardProps> = ({
               backgroundImage: `linear-gradient(180deg,
                     rgba(0, 0, 0, 0),
                     rgba(0, 0, 0, 0.45)), url(${img})`,
-              backgroundSize: "100% 100%",
+              backgroundSize: "cover",
               backgroundPosition: "center bottom",
             }}
           >
-            <div className="backdrop-blur h-full w-full bg-[rgba(0,0,0,0.3)] px-4 py-4">
-              <span className="text-lg font-bold mb-2 text-white">
+            <div className="h-full w-full overflow-y-auto bg-[rgba(0,0,0,0.3)] px-4 py-4 backdrop-blur">
+              <span className="mb-2 text-base font-bold text-white sm:text-lg">
                 Project Description
               </span>
               <br></br>
-              <span className="text-sm text-white">{desc}</span>
+              <span className="text-sm leading-relaxed text-white">{desc}</span>
             </div>
           </div>
         </div>

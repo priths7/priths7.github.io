@@ -1,8 +1,8 @@
 /* Room.css */
 .room {
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: clamp(280px, 80vw, 600px);
+  height: clamp(280px, 80vw, 600px);
   perspective: 100px;
   z-index: -1;
 }
@@ -16,27 +16,27 @@
 }
 
 .top {
-  width: 600px;
-  height: 600px;
-  transform: rotateX(90deg) translateZ(150px);
+  width: clamp(280px, 80vw, 600px);
+  height: clamp(280px, 80vw, 600px);
+  transform: rotateX(90deg) translateZ(clamp(70px, 20vw, 150px));
 }
 
 .bottom {
-  width: 600px;
-  height: 600px;
-  transform: rotateX(-90deg) translateZ(150px);
+  width: clamp(280px, 80vw, 600px);
+  height: clamp(280px, 80vw, 600px);
+  transform: rotateX(-90deg) translateZ(clamp(70px, 20vw, 150px));
 }
 
 .left {
-  width: 1300px;
-  height: 600px;
-  transform: rotateY(-90deg) translateZ(930px);
+  width: clamp(560px, 160vw, 1300px);
+  height: clamp(280px, 80vw, 600px);
+  transform: rotateY(-90deg) translateZ(clamp(320px, 120vw, 930px));
 }
 
 .right {
-  width: 1300px;
-  height: 600px;
-  transform: rotateY(90deg) translateZ(280px);
+  width: clamp(560px, 160vw, 1300px);
+  height: clamp(280px, 80vw, 600px);
+  transform: rotateY(90deg) translateZ(clamp(140px, 36vw, 280px));
 }
 
 .matrix-rain {

@@ -43,5 +43,5 @@ export const TextScramble: React.FC<TextScrambleProps> = ({ texts, duration = 70
     return () => clearTimeout(timeout);
   }, [texts, duration, currentIndex, characters]);
 
-  return <span className='text-[#0F0] text-md'>{scrambledText}</span>;
+  return <span className='min-h-6 text-center text-sm text-[#0F0] sm:text-base md:text-lg'>{scrambledText}</span>;
 };

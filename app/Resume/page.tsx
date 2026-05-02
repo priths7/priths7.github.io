@@ -9,14 +9,14 @@ const Wall = dynamic(() => import('@/components/TextAnimations/Wall'), { ssr: fa
 
 export default function Page() {
   return (
-    <>
+    <div className="min-h-screen">
       <Navbar />
       <Wall />
-      <div className="flex flex-col items-center gap-10 container px-[15px] mx-auto pb-20">
+      <main className="container mx-auto flex flex-col items-center gap-10 px-4 pb-20 pt-8 sm:px-6 md:px-[15px]">
         <Details />
         <Education />
         <WorkEx />
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

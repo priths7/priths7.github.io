@@ -3,4 +3,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
 
+  html,
+  body {
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    color: white;
+  }
+
+  img,
+  canvas {
+    max-width: 100%;
+  }
+}

@@ -12,15 +12,15 @@ const Room = dynamic(() => import('@/components/TextAnimations/Room'), { ssr: fa
 export const Header: FC = () => {
   const phrases = ["Full stack developer", "Master's student at DePaul", "Systems Architecture", "Software Engineering", "Artificial Intelligence"];
   return (
-    <div className="relative h-[100%] w-[100%] flex flex-col items-center justify-center container px-[15px] mx-auto">
-      <div className="absolute">
-      <Room />
+    <section className="relative container mx-auto flex min-h-[calc(100svh-96px)] w-full flex-col items-center justify-center overflow-hidden px-4 py-16 text-center sm:min-h-[calc(100svh-72px)] sm:px-6 lg:px-[15px]">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <Room />
       </div>
       
 
-      <div className="flex flex-col items-center px-6 py-6 backdrop-blur-sm">
+      <div className="relative z-10 flex w-full max-w-3xl flex-col items-center px-4 py-6 backdrop-blur-sm sm:px-6">
         {/* <img src="https://storage.googleapis.com/designare-prod/about/prithvi.png" className="w-[40%]"/> */}
-        <span className="text-4xl text-[#FFF] font-inter ">Prithvi Chakravarthy</span>
+        <span className="text-3xl font-semibold leading-tight text-[#FFF] sm:text-4xl md:text-5xl">Prithvi Chakravarthy</span>
 
         <TextScramble texts={phrases} />
         {/* <div className="mt-20">
@@ -42,6 +42,6 @@ export const Header: FC = () => {
           culpa qui officia deserunt mollit anim id est laborum.
         </span>
       </div> */}
-    </div>
+    </section>
   );
 };

@@ -9,13 +9,13 @@ export default function Page() {
     <div className="min-h-screen bg-cover bg-center">
       <Navbar />
       <Wall />
-      <div className="mt-20 w-full container px-4 sm:px-6 md:px-[15px] mx-auto">
+      <main className="container mx-auto mt-10 w-full px-4 pb-20 sm:mt-16 sm:px-6 md:px-[15px]">
         <div className="flex flex-col">
-          <span className="text-white text-xl sm:text-2xl md:text-3xl flex justify-center text-center">
+          <span className="flex justify-center text-center text-xl text-white sm:text-2xl md:text-3xl">
             Some projects i have worked on
           </span>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 
             <ProjectCard
               link="https://deepstory.co/"
@@ -52,12 +52,12 @@ export default function Page() {
             
           </div>
         </div>
-        <div className="flex flex-col mt-20">
-          <span className="text-white text-xl sm:text-2xl md:text-3xl flex justify-center text-center">
+        <div className="mt-16 flex flex-col sm:mt-20">
+          <span className="flex justify-center text-center text-xl text-white sm:text-2xl md:text-3xl">
             Some Personal Projects i have worked on
           </span>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-4">
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             
             <ProjectCard
               img="/generate.png"
@@ -98,7 +98,7 @@ export default function Page() {
             />
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
