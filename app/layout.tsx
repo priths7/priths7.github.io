@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { AppShell } from '@/components/AppShell'
 
 // const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className='min-h-full'>
-      <body className='font-[Poppins] bg-black min-h-screen'>{children}</body>
+      <body className='font-[Poppins] bg-black min-h-screen'>
+        <AppShell>
+          {children}
+        </AppShell>
+      </body>
     </html>
   )
 }

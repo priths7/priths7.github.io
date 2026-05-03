@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { FC, useState } from "react";
-import { AnimatePresence, motion, Variants } from "framer-motion";
-import "./style.css";
 import { Pill } from "./Pill";
 
 interface ProjectCardProps {
@@ -21,82 +19,88 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   img,
   title,
   desc,
-  delay,
   stacks,
   slug,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  // Toggle the flip state on mouse enter/leave
-  const handleHoverStart = () => setIsFlipped(true);
-  const handleHoverEnd = () => setIsFlipped(false);
-  const handleTap = () => setIsFlipped(!isFlipped);
+  const handleMouseEnter = () => {
+    setIsFlipped(true)
+    window.dispatchEvent(new Event('pause-matrix'));
+  };
+
+  const handleMouseLeave = () => {
+    setIsFlipped(false)
+    window.dispatchEvent(new Event('resume-matrix'));
+  };
 
   return (
-    <motion.div
-      className="perspective-1000 h-72 w-full gap-4 sm:h-80 lg:h-96"
-      onHoverStart={handleHoverStart}
-      onHoverEnd={handleHoverEnd}
-      onTap={handleTap}
+    // Perspective wrapper — plain div, no JS animation overhead
+    <div
+    
+      className="h-72 w-full cursor-pointer sm:h-80 lg:h-96"
+      style={{ perspective: "1000px" }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={() => setIsFlipped((f) => !f)}
     >
-      <motion.div
-        className="relative w-full h-full"
-        style={{ transformStyle: "preserve-3d" }} // Ensures 3D effect for flip
-        animate={{
-          rotateY: isFlipped ? 180 : 0, // Rotate card based on flip state
+      {/*
+       * Inner container: CSS transform + transition instead of Framer Motion.
+       * GPU-accelerated — zero JS overhead regardless of how many cards animate
+       * simultaneously.  will-change hints to the browser to promote this layer
+       * ahead of time.
+       */}
+      <div
+        className="relative h-full w-full rounded-lg"
+        style={{
+          transformStyle: "preserve-3d",
+          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+          transition: "transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)",
+          willChange: "transform",
+          backgroundImage: `url(${img})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
         }}
-        transition={{ duration: 0.6 }} // Duration of the flip animation
       >
-        {/* Front */}
+        {/* ── Front face ─────────────────────────────────────────────────── */}
         <div
-          className="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg"
-          style={{ backfaceVisibility: "hidden" }} // Hide when flipped
+          className="absolute inset-0 flex flex-col items-start justify-end px-4 py-4 bg-gray-100 overflow-hidden"
+          style={{
+            backfaceVisibility: "hidden",
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.5))",
+          }}
         >
-          <div
-            className="flex h-full w-full flex-col items-start justify-end rounded-lg bg-gradient-to-b from-neutral-900 to-slate-50 px-4 py-4"
-            style={{
-              backgroundImage: `linear-gradient(180deg,
-                    rgba(0, 0, 0, 0),
-                    rgba(0, 0, 0, 0.5)), url(${img})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center bottom",
-            }}
-          >
-            <span className="mt-4 text-lg font-bold leading-tight text-white">
-              {title}
-            </span>
-            <div className="mt-4 flex flex-row flex-wrap gap-2 sm:gap-3">
-              {stacks?.map((stack: string) => {
-                return <Pill text={stack} key={stack} />;
-              })}
-            </div>
+          <span className="mt-4 text-lg font-bold leading-tight text-white">
+            {title}
+          </span>
+          <div className="mt-4 flex flex-row flex-wrap gap-2 sm:gap-3">
+            {stacks?.map((stack) => (
+              <Pill text={stack} key={stack} />
+            ))}
           </div>
         </div>
 
-        {/* Back */}
+        {/* ── Back face ──────────────────────────────────────────────────── */}
         <div
-          className="absolute inset-0 flex items-center justify-center bg-gray-100 transform rotate-y-180 rounded-lg"
-          style={{ backfaceVisibility: "hidden" }} // Hide when flipped
+          className="absolute inset-0 flex flex-col overflow-hidden"
+          style={{
+            backfaceVisibility: "hidden",
+            backgroundColor: "rgba(0, 0, 0, 0.45)",
+            transform: "rotateY(180deg)", // pre-rotated so it sits face-down at rest
+          }}
         >
-          <div
-            className="w-full h-full flex flex-col bg-gradient-to-b from-neutral-900 to-slate-50 backdrop-blur-[10px] rounded-lg overflow-hidden"
-            style={{
-              backgroundImage: `linear-gradient(180deg,
-                    rgba(0, 0, 0, 0),
-                    rgba(0, 0, 0, 0.45)), url(${img})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center bottom",
-            }}
-          >
-            <div className="h-full w-full overflow-y-auto bg-[rgba(0,0,0,0.3)] px-4 py-4 backdrop-blur">
+
+            <div className="flex-1 overflow-y-auto px-4 py-4">
               <span className="mb-2 text-base font-bold text-white sm:text-lg">
                 Project Description
               </span>
-              <br></br>
+              <br />
               <span className="text-sm leading-relaxed text-white">{desc}</span>
             </div>
-            {/* Case study + external links */}
-            <div className="mt-4 flex flex-wrap items-center gap-3">
+
+            {/* Action buttons */}
+            <div className="flex flex-wrap items-center gap-3 p-4">
               {slug && (
                 <Link
                   href={`/projects/${slug}`}
@@ -117,8 +121,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
               </Link>
             </div>
           </div>
-        </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 };

@@ -1,12 +1,7 @@
 "use client";
-import { Navbar } from "@/components/Navbar/Navbar";
-import dynamic from "next/dynamic";
-import { useState } from "react"; import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input } from 'antd';
-import TextArea from "antd/es/input/TextArea";
+import { useState } from "react";
+import { Button, Form } from 'antd';
 import { FormInput } from "@/components/Inputs/FormInput";
-import { debug } from "console";
-const Wall = dynamic(() => import('@/components/TextAnimations/Wall'), { ssr: false });
 
 export default function Page() {
     const [formData, setFormData] = useState({
@@ -58,9 +53,7 @@ export default function Page() {
 
 
     return (
-        <div className="min-h-screen bg-cover bg-center">
-            <Navbar />
-            <Wall />
+        <div className="min-h-screen">
             <main className="container mx-auto px-4 pb-20 pt-8 sm:px-6 lg:pt-20">
                 <div className="flex w-full flex-col items-center justify-center">
                     <Form onFinish={handleSubmit} className="mt-10 flex w-full max-w-md flex-col items-stretch" layout="vertical">

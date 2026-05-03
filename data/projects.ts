@@ -27,7 +27,7 @@ export const projects: Project[] = [
   {
     slug: "deepstory",
     title: "Deepstory",
-    img: "/DeepS.png",
+    img: "/deep_s.webp",
     link: "https://deepstory.co/",
     shortDesc:
       "As a Full Stack Android developer, was responsible to design the architecture of the app for a social media app startup and develop it solely.",
@@ -69,7 +69,7 @@ export const projects: Project[] = [
   {
     slug: "stay-leisurely",
     title: "Stay Leisurely",
-    img: "/Leisurely.png",
+    img: "/leisurely.webp",
     link: "https://stayleisurely.com/",
     shortDesc:
       "Designed and developed a booking service management platform for a startup to book villas.",
@@ -111,7 +111,7 @@ export const projects: Project[] = [
   {
     slug: "lyfsum",
     title: "Lyfsum",
-    img: "/Lyfsum.png",
+    img: "/lyfsum.webp",
     link: "https://lyfsum.com/",
     shortDesc:
       "Designed and developed a robust appointment booking platform for patients for a healthcare startup, streamlining scheduling processes for medical appointments.",
@@ -153,9 +153,126 @@ export const projects: Project[] = [
 
   // ─── Personal ────────────────────────────────────────────────────────────────
   {
+    slug: "space-invaders-engine",
+    title: "Space Invaders Game Engine",
+    img: "/space-invaders.png", 
+    link: "https://youtu.be/gPuQwNDYhDI",
+    shortDesc:
+      "A real-time Space Invaders engine built in C# focusing on strictly enforced SOLID principles and zero-allocation runtime memory management.",
+    type: "personal",
+    stacks: ["C#", "Azul Engine", "Design Patterns"],
+    caseStudy: {
+      overview:
+        "A Space Invaders game clone developed in C# using the Azul game engine framework. The project functions as an intensive architectural exercise, focusing on the strict application of SOLID principles and over a dozen Gang of Four design patterns to produce a highly performant, real-time interactive application.",
+      role: "Sole Engineer",
+      problem:
+        "In real-time game development, frequent heap allocation leads to severe performance pauses caused by Garbage Collection. Furthermore, hardcoding logic like collision reactions or animation updates directly into the game loop creates massive coupling and violates the Open/Closed Principle.",
+      solution:
+        "Implemented an extensive Object Pooling system backed by reserve lists to make runtime memory allocation rare and predictable. Decoupled the collision detection math from the resulting game reactions by chaining the <strong>Visitor</strong> and <strong>Observer</strong> patterns, and encapsulated delayed actions using the <strong>Command</strong> pattern.",
+      architecture: {
+        summary:
+          "A scene-driven game loop utilizing a centralized state-machine for transitions, with resource handling managed entirely by Singleton managers backed by pre-allocated object pools.",
+        highlights: [
+          "ManBase universal pool template reduces boilerplate for maintaining active and reserve linked-lists across all resource managers.",
+          "Proxy and Flyweight patterns drastically reduce GPU memory overload by sharing immutable sprite resources among hundreds of game objects.",
+          "Command pattern combined with a priority queue (via DLinkMan) encapsulates time-delayed requests like alien animations and bomb dropping.",
+          "Composite tree structure manages hierarchical game objects, allowing group operations (like AlienGrid movement) to recursively propagate to leaf nodes.",
+          "Null Object pattern provides do-nothing default behaviors, safely eliminating hundreds of avoidable conditional branches and null reference checks per frame.",
+        ],
+      },
+      challenges: [
+        "Adapting the IrrKlang audio library's API to the engine using the Adapter pattern to prevent latency issues and ensure proper resource management.",
+        "Managing the complexities of double dispatch in the Visitor pattern to resolve the specific runtime types of colliding objects (e.g., Missile vs. AlienGrid).",
+        "Resolving physics tunneling issues where high-velocity missiles skipped collision checks with shield bricks due to fixed-size bounding boxes.",
+      ],
+      impact: [
+        "Achieved near-zero runtime allocation, eliminating frame drops caused by garbage collection spikes.",
+        "Proved that the rigorous, systematic integration of multiple design patterns (such as combining Observer with Command) directly manages system complexity and results in a robust, extensible architecture.",
+      ],
+    },
+  },
+  {
+    slug: "private-ai-journal",
+    title: "Private AI Journal OS",
+    img: "/ai-journal.webp", 
+    link: "https://github.com/priths7",
+    shortDesc:
+      "A privacy-first, local-offline AI journaling application with eventual cloud synchronization, capable of running local models for RAG.", //
+    type: "personal",
+    stacks: ["Rust", "Tauri", "React", "SQLite", "Hugging Face"],
+    caseStudy: {
+      overview:
+        "A privacy-first, local-offline AI journaling application built on a local-first architecture based on the model of an operating system. It utilizes a hybrid RAG (Retrieval-Augmented Generation) pipeline, seamlessly merging encrypted journal memory with local workspace context.",
+      role: "Sole Engineer",
+      problem:
+        "Standard AI-assisted writing tools rely on cloud APIs, compromising the privacy of highly personal journal data. Furthermore, relying purely on quantized local models introduces hardware constraints, where querying extensive historical data triggers out-of-memory (OOM) failures or context truncation.",
+      solution:
+        "Engineered a desktop application using <strong>Tauri</strong> and <strong>Rust</strong>. Implemented a RAG pipeline utilizing a local <code>all-MiniLM-L6-v2</code> model via the <code>candle</code> framework to pre-calculate semantic relevance and inject only mathematically relevant text chunks into the prompt. A background Rust thread intercepts prompts to redact sensitive PII tokens locally before transmitting heavy generation tasks to the Groq cloud API.",
+      architecture: {
+        summary:
+          "A Tauri-based desktop architecture utilizing a unified encrypted SQLite vault for storage, and a standalone background daemon for asynchronous workspace file ingestion.",
+        highlights: [
+          "Rust kernel manages memory safety and hardware-accelerated machine learning inference.",
+          "Data is stored in a locally compiled SQLite database (vault.db), encrypted at rest using a Master Password via magic_crypt.",
+          "Local PII redaction using the candle framework executed entirely on-device before cloud transmission.",
+          "Zero-knowledge cloud keys ensure third-party credentials (like Supabase and Groq keys) are dynamically AES-encrypted, leaving no hardcoded secrets in the binary.",
+          "Standalone Rust daemon handles workspace file discovery, semantic chunking, and pure-Rust vector indexing without blocking the main UI thread.",
+          "Custom hybrid synchronization push/pulls encrypted ciphertext to a Supabase PostgreSQL remote target without decrypting data in transit.",
+        ],
+      },
+      challenges: [
+        "Preventing main-thread deadlocks during resource-intensive operations, requiring delegation to the tokio async runtime.",
+        "Managing Supabase Free Tier constraints, specifically the 500 MB database limit which is heavily consumed by pgvector embeddings.",
+        "Assembling budget-aware contexts to merge journal text and workspace text cleanly without blowing out the LLM context window.",
+      ],
+      impact: [
+        "Delivered a fully private AI journaling tool that enforces a zero-trust, local-first security model.",
+        "Successfully orchestrated a zero-C-dependency hybrid retrieval system using raw BLOB storage in standard rusqlite.",
+      ],
+    },
+  },
+  {
+    slug: "distributed-file-retrieval",
+    title: "Distributed File Retrieval Engine",
+    img: "/file-engine.webp", 
+    link: "https://github.com/priths7",
+    shortDesc:
+      "A distributed system for retrieving file paths and term frequencies across multiple nodes.",
+    type: "personal",
+    stacks: ["gRPC", "ZeroMQ", "Java"],
+    caseStudy: {
+      overview:
+        "A high-performance distributed file retrieval engine designed to query and return file paths and term frequencies across a network of nodes, prioritizing low-latency communication and high concurrency.",
+      role: "Sole Engineer",
+      problem:
+        "Querying file metadata and term frequencies across distributed nodes traditionally introduces severe communication bottlenecks. A basic server-reply architecture blocks under high concurrency, drastically increasing latency during concurrent retrieval requests.",
+      solution:
+        "Built a distributed engine that evolved from a standard server-reply model to a highly concurrent <strong>Router-Dealer communication pattern</strong>. Utilized <strong>gRPC</strong> for structured remote procedure calls and <strong>ZeroMQ</strong> for asynchronous message queuing.",
+      architecture: {
+        summary:
+          "A distributed node network utilizing gRPC for strict service definitions and ZeroMQ for high-throughput messaging, orchestrated via a Router-Dealer topology.",
+        highlights: [
+          "Implementation of the ZeroMQ Router-Dealer pattern to handle asynchronous, non-blocking requests",
+          "gRPC integration for strongly typed, cross-service communication and payload serialization",
+          "Distributed querying of file paths and term frequencies with aggregated result compilation",
+          "Optimized for low-latency network communication and high concurrent node scaling",
+        ],
+      },
+      challenges: [
+        "Migrating the initial server-reply architecture to a Router-Dealer pattern without dropping in-flight requests",
+        "Handling network partitions and node timeouts during term frequency aggregation",
+        "Ensuring thread safety and memory efficiency when parsing large file directories concurrently",
+      ],
+      impact: [
+        "Successfully implemented a robust distributed systems architecture capable of non-blocking parallel execution",
+        "Deepened foundational knowledge of low-level network protocols and message queue orchestration",
+      ],
+    },
+  },
+  {
     slug: "image-generation-model",
     title: "Image Generation Model",
-    img: "/generate.png",
+    img: "/generate.webp",
     link: "https://github.com/priths7/ImageGenerationModel",
     shortDesc:
       "A stable diffusion model to generate images built on PyTorch.",
@@ -197,7 +314,7 @@ export const projects: Project[] = [
   {
     slug: "similar-image-recommender",
     title: "Similar Image Recommender",
-    img: "/similar.png",
+    img: "/similar.webp",
     link: "https://github.com/priths7/Similar-Images-Recommender",
     shortDesc:
       "An image feature extraction engine that quantifies visual similarity between images using deep learning embeddings.",
@@ -239,7 +356,7 @@ export const projects: Project[] = [
   {
     slug: "image-description-generator",
     title: "Image Description Generator",
-    img: "/define.png",
+    img: "/define.webp",
     link: "https://github.com/priths7/Image-Description-Generator",
     shortDesc:
       "A TensorFlow-based image captioning model that generates natural language descriptions for a given input image.",
@@ -281,7 +398,7 @@ export const projects: Project[] = [
   {
     slug: "motion-detection-graph",
     title: "Motion Detection Graph",
-    img: "/graph.png",
+    img: "/graph.webp",
     link: "https://github.com/priths7/Motion_detection_graph",
     shortDesc:
       "A real-time motion detection tool that plots a time-series graph of face detection duration using Python and OpenCV.",
@@ -320,6 +437,8 @@ export const projects: Project[] = [
       ],
     },
   },
+  
+  
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {

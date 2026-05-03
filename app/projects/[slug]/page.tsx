@@ -1,6 +1,6 @@
-import { Navbar } from "@/components/Navbar/Navbar";
 import { getProjectBySlug, getAdjacentProjects, projects } from "@/data/projects";
 import { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -74,11 +74,11 @@ export default function CaseStudyPage({
   const cs = project.caseStudy;
 
   return (
-    <div className="relative min-h-screen bg-black">
+    <div className="relative min-h-screen">
       {/* Subtle scanline overlay */}
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.03]"
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.05]"
         style={{
           backgroundImage:
             "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,0,0.15) 2px, rgba(0,255,0,0.15) 4px)",
@@ -96,9 +96,7 @@ export default function CaseStudyPage({
       />
 
       <div className="relative z-10">
-        <Navbar />
-
-        <main className="mx-auto max-w-3xl px-4 pb-24 pt-10 sm:px-6 sm:pt-16">
+        <main className="mx-auto max-w-3xl px-4 pb-10 pt-10 sm:px-6 sm:pt-16 backdrop-blur-sm rounded-2xl border border-white/10 shadow-2xl">
 
           {/* ── Back breadcrumb ── */}
           <Link
@@ -110,10 +108,13 @@ export default function CaseStudyPage({
 
           {/* ── Hero image ── */}
           <div className="relative mb-10 h-52 w-full overflow-hidden rounded-lg border border-white/10 sm:h-72">
-            <img
+            <Image
               src={project.img}
               alt={project.title}
-              className="h-full w-full object-cover"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 48rem"
+              priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             <div className="absolute bottom-4 left-5">
