@@ -15,11 +15,31 @@ export interface Project {
   slug: string;
   title: string;
   img: string;
+  /**
+   * Primary external link. Used on the case study page's "Visit" button and as
+   * the fallback Visit link on the project card when repoStatus is not "private".
+   * For projects whose only public presence is a YouTube demo, set this to the
+   * YouTube URL and also populate `youtubeLink` so the card renders a dedicated
+   * Watch Demo button.
+   */
   link: string;
   shortDesc: string;
   type: "professional" | "personal";
   stacks: string[];
   caseStudy: CaseStudy;
+  sourceNote?: string;
+  linkLabel?: string;
+  /**
+   * Optional dedicated YouTube demo URL. When present, the project card renders
+   * a separate "Watch Demo ▶" button alongside (or instead of) the Visit button.
+   */
+  youtubeLink?: string;
+  /**
+   * Visibility of the primary GitHub repository. When set to "private", the
+   * project card replaces the clickable Visit/GitHub button with a non-interactive
+   * "Private Repo 🔒" badge so visitors understand the code is not public.
+   */
+  repoStatus?: "public" | "private";
 }
 
 export const projects: Project[] = [
@@ -155,47 +175,54 @@ export const projects: Project[] = [
   {
     slug: "space-invaders-engine",
     title: "Space Invaders Game Engine",
-    img: "/space-invaders.png", 
+    img: "/space-invaders.png",
     link: "https://youtu.be/gPuQwNDYhDI",
+    youtubeLink: "https://youtu.be/gPuQwNDYhDI",
+    repoStatus: "private",
     shortDesc:
-      "A real-time Space Invaders engine built in C# focusing on strictly enforced SOLID principles and zero-allocation runtime memory management.",
+      "A C# arcade engine built with Azul, emphasizing pool-backed managers, scene states, collision visitors, timed commands, and reusable game-object systems.",
     type: "personal",
-    stacks: ["C#", "Azul Engine", "Design Patterns"],
+    stacks: ["C#", "Azul Engine", "IrrKlang", "Design Patterns"],
     caseStudy: {
       overview:
-        "A Space Invaders game clone developed in C# using the Azul game engine framework. The project functions as an intensive architectural exercise, focusing on the strict application of SOLID principles and over a dozen Gang of Four design patterns to produce a highly performant, real-time interactive application.",
+        "A playable Space Invaders clone developed in C# on top of the Azul game framework. The project was built as an architecture-focused real-time systems case study, with select/play/game-over scenes, credits, one- and two-player sessions, score tracking, waves, UFO events, destructible shields, animated aliens, and multiple bomb behaviors.",
       role: "Sole Engineer",
       problem:
-        "In real-time game development, frequent heap allocation leads to severe performance pauses caused by Garbage Collection. Furthermore, hardcoding logic like collision reactions or animation updates directly into the game loop creates massive coupling and violates the Open/Closed Principle.",
+        "A real-time arcade game has to update input, animation, collision, scoring, object removal, audio, and rendering every frame without turning the main loop into a tightly coupled script. Naive allocation and direct mutation during collision traversal can also create frame instability, garbage collection pressure, and hard-to-reproduce bugs.",
       solution:
-        "Implemented an extensive Object Pooling system backed by reserve lists to make runtime memory allocation rare and predictable. Decoupled the collision detection math from the resulting game reactions by chaining the <strong>Visitor</strong> and <strong>Observer</strong> patterns, and encapsulated delayed actions using the <strong>Command</strong> pattern.",
+        "Built a scene-driven engine around pool-backed manager classes, composite game-object trees, and event-style collision reactions. <strong>Visitor</strong> handles double-dispatch collision routing, <strong>Observer</strong> keeps reactions decoupled from detection, <strong>Command</strong> powers delayed events such as alien motion, bomb drops, UFO spawns, respawns, and scene changes, and <strong>Strategy</strong> gives bombs interchangeable fall behavior.",
       architecture: {
         summary:
-          "A scene-driven game loop utilizing a centralized state-machine for transitions, with resource handling managed entirely by Singleton managers backed by pre-allocated object pools.",
+          "The game runs through an Azul.Game lifecycle with centralized content loading, a SceneContext state machine, singleton resource managers, active/reserve object pools, sprite proxies, batched rendering, and a sorted timer-event list for scheduled gameplay commands.",
         highlights: [
-          "ManBase universal pool template reduces boilerplate for maintaining active and reserve linked-lists across all resource managers.",
-          "Proxy and Flyweight patterns drastically reduce GPU memory overload by sharing immutable sprite resources among hundreds of game objects.",
-          "Command pattern combined with a priority queue (via DLinkMan) encapsulates time-delayed requests like alien animations and bomb dropping.",
-          "Composite tree structure manages hierarchical game objects, allowing group operations (like AlienGrid movement) to recursively propagate to leaf nodes.",
-          "Null Object pattern provides do-nothing default behaviors, safely eliminating hundreds of avoidable conditional branches and null reference checks per frame.",
+          "SceneContext switches between Select, Play, and Game Over states while SessionManager preserves credits, active player, lives, high score, and one/two-player turn state.",
+          "ManBase provides a reusable active/reserve-list template used by managers for textures, images, fonts, glyphs, sprites, collision pairs, game-object nodes, timers, sounds, and ghosted objects.",
+          "Composite hierarchies model the AlienGrid, alien columns, shield grids, shield columns, walls, bumpers, missile group, bomb root, ship root, and UFO root as trees that can update and collide at multiple levels.",
+          "ColPairMan registers collision pairs between object trees; ColRect performs rectangle intersection tests; Visitor resolves concrete runtime types; ColSubject then notifies focused observers for scoring, removal, sound, explosions, and state transitions.",
+          "TimerEventMan stores Command objects on a sorted DLinkMan list and drives repeating alien animation, grid movement, randomized bomb drops, UFO spawning, delayed explosions, ship respawns, player swaps, and scene transitions.",
+          "SpriteGameProxy, SpriteBoxProxy, SpriteGameBatch, TextureMan, and ImageMan share immutable sprite/image resources while allowing each live game object to maintain independent position and collision state.",
         ],
       },
       challenges: [
-        "Adapting the IrrKlang audio library's API to the engine using the Adapter pattern to prevent latency issues and ensure proper resource management.",
-        "Managing the complexities of double dispatch in the Visitor pattern to resolve the specific runtime types of colliding objects (e.g., Missile vs. AlienGrid).",
-        "Resolving physics tunneling issues where high-velocity missiles skipped collision checks with shield bricks due to fixed-size bounding boxes.",
+        "Preventing collision observers from mutating the same composite tree being traversed, solved with mark-for-death flags plus DelayedObjectMan for deferred removals.",
+        "Keeping two-player state consistent across scene transitions, respawns, player swaps, credits, lives, scores, preserved alien grids, and preserved shield damage.",
+        "Modeling destructible shields as many tiny bricks without hardcoding every interaction between missiles, bombs, aliens, columns, and shield roots.",
+        "Coordinating timer events across scene entry/exit and pause-like transitions so scheduled commands do not fire at stale times.",
+        "Preloading and routing IrrKlang sound sources through SoundMan so explosions, missile shots, UFO audio, and alien movement sounds remain responsive during frame updates.",
       ],
       impact: [
-        "Achieved near-zero runtime allocation, eliminating frame drops caused by garbage collection spikes.",
-        "Proved that the rigorous, systematic integration of multiple design patterns (such as combining Observer with Command) directly manages system complexity and results in a robust, extensible architecture.",
+        "Delivered a complete playable arcade clone with attract/select flow, credits, one/two-player mode, scoring, lives, waves, UFOs, destructible shields, alien acceleration, and varied bomb patterns.",
+        "Reduced per-frame allocation pressure through reusable managers, reserve lists, sprite proxies, and delayed object recycling, making runtime behavior more predictable for a real-time game loop.",
+        "Produced an engineering design document and UML diagrams covering 14 applied patterns: Singleton, Object Pool, Factory, Observer, Flyweight, Proxy, Command, Iterator, State, Composite, Strategy, Visitor, Null Object, Adapter, and Template Method.",
       ],
     },
   },
   {
     slug: "private-ai-journal",
     title: "Private AI Journal OS",
-    img: "/ai-journal.webp", 
+    img: "/ai-journal.webp",
     link: "https://github.com/priths7",
+    repoStatus: "private",
     shortDesc:
       "A privacy-first, local-offline AI journaling application with eventual cloud synchronization, capable of running local models for RAG.", //
     type: "personal",
@@ -235,7 +262,8 @@ export const projects: Project[] = [
     slug: "distributed-file-retrieval",
     title: "Distributed File Retrieval Engine",
     img: "/file-engine.webp", 
-    link: "https://github.com/priths7",
+    link: "https://github.com/transcendental-software/csc-435-ea-priths7",
+    repoStatus: "private",
     shortDesc:
       "A distributed system for retrieving file paths and term frequencies across multiple nodes.",
     type: "personal",
@@ -280,36 +308,35 @@ export const projects: Project[] = [
     stacks: ["PyTorch", "Python"],
     caseStudy: {
       overview:
-        "A from-scratch implementation of a Stable Diffusion image generation model in PyTorch. The project explored the core components of latent diffusion — the VAE encoder/decoder, the U-Net denoising network, and the CLIP text conditioning pipeline — as a deep learning study in generative modelling.",
+        "A from-scratch implementation of a Stable Diffusion image generation inference pipeline in PyTorch. The project explored the core components of latent diffusion — the VAE encoder/decoder, the U-Net denoising network, and the CLIP text conditioning pipeline — as a deep learning study in generative modelling.",
       role: "Sole Researcher & Engineer",
       problem:
-        "Generative image models are often treated as black boxes via API. The goal was to understand the internals of Stable Diffusion by implementing and training the key components from the ground up rather than wrapping an existing pipeline — building intuition for latent spaces, diffusion schedules, and conditional generation.",
+        "Generative image models are often treated as black boxes via API. The goal was to understand the internals of Stable Diffusion by implementing the key components for inference from the ground up rather than wrapping an existing pipeline — building intuition for latent spaces, diffusion schedules, and conditional generation.",
       solution:
-        "Implemented the core Stable Diffusion pipeline in PyTorch: a Variational Autoencoder to project images into a compressed latent space, a U-Net with attention blocks for iterative denoising, and DDPM/DDIM noise schedulers. Text conditioning was applied via CLIP embeddings fed through cross-attention layers in the U-Net.",
+        "Implemented the core Stable Diffusion inference pipeline in PyTorch: a Variational Autoencoder to project images into a compressed latent space and back, a U-Net with attention blocks for iterative denoising, and a DDPM noise scheduler. Text conditioning was applied via CLIP embeddings fed through cross-attention layers in the U-Net.",
       architecture: {
         summary:
-          "A three-component pipeline: VAE for latent compression, a U-Net denoiser with cross-attention for text conditioning, and a noise scheduler controlling the forward and reverse diffusion process.",
+          "A three-component pipeline: VAE for latent compression/decompression, a U-Net denoiser with cross-attention for text conditioning, and a noise scheduler controlling the reverse diffusion process.",
         highlights: [
           "Variational Autoencoder (VAE) for encoding images into a 4-channel latent space and decoding generated latents back to pixel space",
-          "U-Net architecture with ResNet blocks and multi-head cross-attention for conditioning on CLIP text embeddings",
-          "DDPM noise scheduler implementing the forward diffusion process and learned reverse denoising",
-          "DDIM sampling for faster inference with fewer denoising steps without retraining",
-          "Text prompt conditioning via CLIP ViT embeddings injected through cross-attention at multiple U-Net resolutions",
-          "Training loop with loss computed on predicted noise vs. actual noise added during forward diffusion",
-        ],
-      },
-      challenges: [
-        "Correctly implementing the KL-divergence regularisation term in the VAE loss without posterior collapse",
-        "Aligning tensor dimensions across the U-Net's multi-resolution skip connections and cross-attention heads",
-        "Managing GPU memory during training with large latent tensors and attention computation",
-        "Reproducing the DDIM deterministic sampling path from the DDPM stochastic formulation",
-      ],
-      impact: [
-        "Built a working end-to-end text-to-image generation pipeline from mathematical foundations",
-        "Developed deep intuition for latent diffusion, attention mechanisms, and noise scheduling",
-        "Published as an open-source reference implementation on GitHub",
+        "U-Net architecture with ResNet blocks and multi-head cross-attention for conditioning on CLIP text embeddings",
+        "DDPM noise scheduler implementing the forward diffusion process (for image-to-image) and reverse denoising",
+        "Text prompt conditioning via CLIP ViT embeddings injected through cross-attention at multiple U-Net resolutions",
+        "Custom script to map and load standard pre-trained Stable Diffusion weights (v1-5) into the custom PyTorch architecture"
       ],
     },
+    "challenges": [
+      "Aligning tensor dimensions across the U-Net's multi-resolution skip connections and cross-attention heads",
+      "Mapping pre-trained Stable Diffusion weights accurately into custom implemented PyTorch classes and layers",
+      "Managing memory efficiently during inference, implementing device offloading strategies across CPU, CUDA, and MPS",
+      "Accurately reproducing the DDPM reverse process steps and variance calculations to denoise latents correctly"
+    ],
+    "impact": [
+      "Built a working end-to-end text-to-image and image-to-image generation inference pipeline from mathematical foundations",
+      "Developed deep intuition for latent diffusion, attention mechanisms, and noise scheduling",
+      "Published as an open-source reference implementation on GitHub"
+    ]
+  }
   },
   {
     slug: "similar-image-recommender",
@@ -317,39 +344,42 @@ export const projects: Project[] = [
     img: "/similar.webp",
     link: "https://github.com/priths7/Similar-Images-Recommender",
     shortDesc:
-      "An image feature extraction engine that quantifies visual similarity between images using deep learning embeddings.",
+      "An image feature extraction engine that quantifies visual similarity between images using deep learning embeddings and autoencoders.",
     type: "personal",
-    stacks: ["TensorFlow", "Python"],
+    stacks: ["TensorFlow", "Python", "Keras"],
     caseStudy: {
       overview:
-        "A content-based image retrieval system that uses deep learning feature extraction to find and rank visually similar images from a reference dataset. Given a query image, the engine returns the most visually similar images ranked by embedding cosine similarity.",
+        "A content-based image retrieval system that uses deep learning feature extraction to find and rank visually similar images from a reference dataset. The engine explores two approaches: using a pre-trained VGG16 model and a custom Convolutional Autoencoder. Given a query image, it returns the most visually similar images ranked by Euclidean distance in the embedding space.",
       role: "Sole Researcher & Engineer",
       problem:
         "Traditional image search relies on metadata tags and filenames — not the visual content itself. The goal was to build a system that understands what an image looks like and can surface similar images based on visual features alone, without any manual labelling.",
       solution:
-        "Used a pre-trained CNN (VGG16/ResNet) as a feature extractor, removing the classification head to expose the deep embedding layer. Images are encoded into high-dimensional feature vectors and similarity is computed using cosine distance. A nearest-neighbour search over the embedding index retrieves and ranks the most similar images.",
+        "Implemented two feature extraction methods. The first uses a pre-trained VGG16 CNN as a feature extractor, removing the classification head to expose the 'fc1' embedding layer. The second trains a custom Convolutional Autoencoder to compress images into a 16-dimensional latent space. Images are encoded into feature vectors and similarity is computed using Euclidean distance. A nearest-neighbour search over the embedding index retrieves and ranks the most similar images.",
       architecture: {
         summary:
-          "A TensorFlow feature extraction pipeline using a headless pre-trained CNN, a vector index of pre-computed embeddings, and cosine similarity ranking for query-time retrieval.",
+          "A TensorFlow/Keras feature extraction pipeline using both a headless pre-trained VGG16 model and a custom Autoencoder, a vector index of pre-computed embeddings, and Euclidean distance ranking for query-time retrieval.",
         highlights: [
-          "Pre-trained CNN backbone (VGG16/ResNet50) with the classification head removed to expose 2048-dim feature vectors",
-          "Batch pre-computation of embeddings for the reference image dataset stored as a NumPy index",
-          "Cosine similarity computed between query embedding and all reference vectors for ranked retrieval",
-          "TensorFlow image preprocessing pipeline matching the training-time normalisation of the backbone",
-          "Top-K retrieval with similarity scores returned alongside matched images",
-          "Extensible design allowing backbone swap for domain-specific fine-tuning",
+          "Pre-trained VGG16 CNN backbone with the classification head removed to expose 4096-dim feature vectors from the 'fc1' layer.", 
+          "Custom Convolutional Autoencoder trained from scratch to compress images into a dense 16-dim latent space representation.",
+          "Batch pre-computation of embeddings for the reference image dataset stored as a NumPy index/pickle file.", 
+          "Euclidean distance computed between query embedding and all reference vectors for ranked retrieval.", 
+          "TensorFlow image preprocessing pipeline matching the training-time normalisation.", 
+          "Top-K retrieval with distance scores returned alongside matched images.",
+          "Evaluation includes comparing both Euclidean distance of visual features and text similarity of product categories."
         ],
       },
       challenges: [
-        "Choosing the right layer depth for feature extraction — too shallow loses semantic meaning, too deep overfits to ImageNet classes",
-        "Normalising embeddings consistently between pre-computation and query time to avoid distance distortion",
-        "Scaling the similarity search efficiently as the reference dataset grows beyond memory-resident size",
-        "Evaluating retrieval quality without labelled ground-truth pairs",
+        "Choosing the right layer depth for feature extraction — too shallow loses semantic meaning, too deep overfits to ImageNet classes.",
+        "Designing and training an effective Convolutional Autoencoder architecture to capture meaningful visual representations in a highly compressed latent space.", 
+        "Normalising embeddings consistently between pre-computation and query time to avoid distance distortion.", 
+        "Scaling the similarity search efficiently as the reference dataset grows.", 
+        "Evaluating retrieval quality without labelled ground-truth pairs, mitigated by checking category similarity." 
       ],
       impact: [
-        "Demonstrated content-based image retrieval without any manual labelling or metadata",
-        "Achieved visually coherent similarity rankings across diverse image categories",
-        "Open-sourced as an educational reference for embedding-based retrieval systems",
+        "Demonstrated content-based image retrieval without any manual labelling or metadata.", 
+        "Compared performance between transfer learning (VGG16) and custom representation learning (Autoencoder).",
+        "Achieved visually coherent similarity rankings across diverse image categories.", 
+        "Open-sourced as an educational reference for embedding-based retrieval systems." 
       ],
     },
   },
@@ -361,37 +391,37 @@ export const projects: Project[] = [
     shortDesc:
       "A TensorFlow-based image captioning model that generates natural language descriptions for a given input image.",
     type: "personal",
-    stacks: ["TensorFlow", "Python"],
+    stacks: ["TensorFlow", "Python", "Jupyter Notebook"],
     caseStudy: {
       overview:
-        "An image captioning system that generates natural language descriptions for arbitrary input images. The model uses a CNN encoder to extract visual features and an RNN decoder to autoregressively generate descriptive captions word-by-word.",
+        "An image captioning system that generates natural language descriptions for arbitrary input images. The model uses a CNN encoder to extract visual features and an RNN decoder to to process text and autoregressively generate descriptive captions word-by-word.",
       role: "Sole Researcher & Engineer",
       problem:
-        "Image captioning bridges computer vision and natural language processing — a model must simultaneously understand visual content and generate grammatically coherent descriptions. The project aimed to implement this encoder-decoder architecture from scratch to understand the cross-modal alignment between vision and language.",
+        "Image captioning bridges computer vision and natural language processing — a model must simultaneously understand visual content and generate grammatically coherent descriptions. The project aimed to implement a multimodal architecture from scratch to understand the cross-modal alignment between vision and language.",
       solution:
-        "Built an encoder-decoder architecture: a pre-trained InceptionV3 CNN extracts spatial image features, which are fed as the initial hidden state into an LSTM decoder. The decoder generates captions token-by-token using a word embedding layer and an attention mechanism to focus on relevant image regions at each generation step.",
+        "Built a merge-model architecture: a pre-trained InceptionV3 CNN extracts global image features, while pre-trained GloVe embeddings represent text tokens. An LSTM processes the text sequences, and the visual and textual features are merged using an addition layer before dense layers predict the next token in the caption.",
       architecture: {
         summary:
-          "A CNN-RNN encoder-decoder: InceptionV3 encodes image features, a Bahdanau attention layer aligns visual regions to generation steps, and an LSTM decoder produces captions autoregressively.",
+          "A CNN-RNN merge model: InceptionV3 encodes global image features, pre-trained GloVe embeddings and an LSTM process the text, and their outputs are combined to predict the next word.",
         highlights: [
-          "InceptionV3 CNN encoder (pre-trained on ImageNet) with spatial feature maps extracted before the global pooling layer",
-          "Bahdanau additive attention mechanism weighting image regions at each decoder timestep",
-          "LSTM decoder with learned word embeddings generating tokens until the end-of-sequence token",
-          "Teacher forcing during training with cross-entropy loss over the caption vocabulary",
-          "BLEU score evaluation against reference captions on a held-out validation split",
-          "Trained on MS-COCO dataset captions with vocabulary truncation for manageable embedding size",
+          "InceptionV3 CNN encoder (pre-trained on ImageNet) extracting 2048-dimensional global feature vectors",
+          "Pre-trained 200-dimensional GloVe word embeddings (glove.6B.200d) utilized as non-trainable weights",
+          "LSTM layer processing sequences of caption tokens",
+          "Merge architecture adding dense projections of image features and LSTM outputs",
+          "Greedy search implemented to generate final image descriptions token-by-token",
+          "Trained on MS-COCO dataset captions using a custom data generator to yield batches progressively",
         ],
       },
       challenges: [
-        "Aligning CNN spatial features (H×W×C tensors) with the sequential LSTM hidden state interface",
-        "Avoiding exposure bias where the model sees teacher-forced tokens during training but its own predictions at inference",
-        "Managing vocabulary size vs. coverage tradeoff during preprocessing",
-        "Stabilising LSTM training with long caption sequences using gradient clipping",
+        "Combining global CNN features with sequential LSTM states via a merge architecture", 
+        "Integrating pre-trained GloVe embeddings efficiently into the embedding layer", 
+        "Managing large MS-COCO dataset size with a custom Python generator to avoid memory exhaustion", 
+        "Preprocessing sequence data to create multiple input-output pairs for next-token prediction"
       ],
       impact: [
-        "Produced a working image captioning pipeline from visual input to natural language output",
-        "Demonstrated cross-modal encoder-decoder design and attention alignment in practice",
-        "Published as an accessible open-source reference for image captioning with TensorFlow",
+        "Produced a working image captioning pipeline from visual input to natural language output", 
+        "Demonstrated a practical merge-based multimodal architecture for vision and language", 
+        "Published as an accessible open-source reference for image captioning with TensorFlow"
       ],
     },
   },
@@ -401,39 +431,40 @@ export const projects: Project[] = [
     img: "/graph.webp",
     link: "https://github.com/priths7/Motion_detection_graph",
     shortDesc:
-      "A real-time motion detection tool that plots a time-series graph of face detection duration using Python and OpenCV.",
+      "A real-time motion detection tool that captures video, logs activity intervals using OpenCV, and plots an interactive time-series graph using Bokeh and Pandas.",
     type: "personal",
-    stacks: ["OpenCV", "Python"],
+    stacks: ["OpenCV", "Python", "Pandas", "Bokeh"],
     caseStudy: {
       overview:
-        "A real-time face and motion detection tool that captures webcam frames, detects faces using OpenCV's Haar Cascade classifier, and plots an accumulating time-series graph showing the duration and frequency of detected presence over a session.",
+        "A motion detection tool that captures webcam frames, detects movement by comparing frames against a static background using OpenCV, and plots an interactive time-series graph showing the duration and frequency of detected presence over a session.",
       role: "Sole Engineer",
       problem:
-        "Understanding how long a subject is present in a camera frame — and visualising that over time — has applications in attention tracking, occupancy monitoring, and basic behavioural analysis. The project explored building a lightweight, dependency-minimal tool for real-time presence logging using only Python and OpenCV.",
+        "Understanding how long a subject is present in a camera frame — and visualising that over time — has applications in attention tracking, occupancy monitoring, and basic behavioural analysis. The project explored building a lightweight tool for logging motion intervals and visualizing the data clearly.",
       solution:
-        "A Python script captures webcam frames via OpenCV VideoCapture, applies Haar Cascade face detection on each frame, and logs detection timestamps. Matplotlib renders a live-updating time-series graph showing presence duration per time window, updated incrementally as new frames are processed.",
+        "A Python script captures webcam frames via OpenCV VideoCapture, applies background subtraction and contour detection to identify motion, and logs the start and end timestamps of each motion event. The data is processed using Pandas and an interactive HTML time-series graph is generated using Bokeh to visualize the presence duration.",
       architecture: {
         summary:
-          "A single-process Python loop: OpenCV captures and processes frames, Haar Cascade classifies presence, and Matplotlib renders a continuously updated time-series plot.",
+          "A Python loop captures and processes frames with OpenCV to log motion events, while a separate data processing phase uses Pandas to format the timestamps and Bokeh to render an interactive HTML plot.",
         highlights: [
           "OpenCV VideoCapture for real-time webcam frame acquisition at configurable frame rates",
-          "Haar Cascade Classifier (frontal face) for lightweight, CPU-efficient face detection per frame",
+          "Background subtraction using frame differencing and Gaussian blur to reduce noise and detection artifacts",
           "Frame pre-processing pipeline: grayscale conversion and histogram equalisation for detection robustness",
-          "Timestamp logging per detected frame, aggregated into fixed time-window bins",
-          "Matplotlib FuncAnimation for live-updating time-series graph without blocking the capture loop",
-          "Detection sensitivity configurable via scale factor and minimum neighbour parameters",
+          "Timestamp logging for the start and end of continuous motion events, exported to a CSV file",
+          "Data manipulation and formatting using Pandas DataFrames",
+          "Interactive time-series graphing using Bokeh with hover tools to display precise event timings",
+          "Detection sensitivity configurable via minimum contour area thresholds" 
         ],
       },
       challenges: [
-        "Preventing the Matplotlib update loop from blocking the OpenCV capture thread, requiring careful use of non-blocking draw calls",
-        "Tuning Haar Cascade parameters to balance false positive rate vs. missed detections in varying lighting",
-        "Maintaining a rolling time-series buffer without unbounded memory growth over long sessions",
-        "Handling graceful shutdown of both the capture loop and the plot window simultaneously",
+        "Handling sudden lighting changes that could trigger false positive motion events",
+        "Tuning the Gaussian blur and contour area thresholds to filter out background noise while reliably detecting subjects",
+        "Ensuring the start and end timestamps of motion events are correctly paired and appended to the dataset, especially during rapid entry and exit",
+        "Formatting datetime objects correctly so that the Bokeh figure can accurately plot the start and end times on a continuous x-axis",
       ],
       impact: [
-        "Built a fully functional real-time presence detection and visualisation tool with no heavy dependencies beyond OpenCV and Matplotlib",
-        "Demonstrated practical application of classical computer vision for lightweight monitoring use cases",
-        "Open-sourced as a beginner-accessible introduction to OpenCV and real-time data visualisation in Python",
+        "Built a fully functional motion detection and visualization tool using standard Python data science and computer vision libraries",
+        "Demonstrated practical application of classical computer vision for security and monitoring use cases",
+        "Created an interactive, exportable HTML graph that allows users to easily analyze motion data post-capture",
       ],
     },
   },

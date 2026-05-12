@@ -134,6 +134,17 @@ export default function CaseStudyPage({
             ))}
           </div>
 
+          {project.sourceNote && (
+            <div className="mb-10 rounded-lg border border-[#0F0]/30 bg-[#0F0]/5 p-4">
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-[#0F0]/70">
+                Source Availability
+              </p>
+              <p className="text-sm leading-relaxed text-white/80">
+                {project.sourceNote}
+              </p>
+            </div>
+          )}
+
           <div className="space-y-10">
 
             {/* ── Overview ── */}
@@ -160,7 +171,7 @@ export default function CaseStudyPage({
               </section>
               <section>
                 <SectionHeading>Solution</SectionHeading>
-                <p className="text-sm leading-relaxed text-white/80">{cs.solution}</p>
+                <p className="text-sm leading-relaxed text-white/80" dangerouslySetInnerHTML={{__html: cs.solution}}></p>
               </section>
             </div>
 
@@ -173,7 +184,7 @@ export default function CaseStudyPage({
                 {cs.architecture.summary}
               </p>
               <div className="rounded-lg border border-white/10 bg-white/[0.03] p-5">
-                <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-[#0F0]/60">
+                <p className="mb-4 font-mono text-[12px] uppercase tracking-widest text-[#0F0]/60">
                   Key Design Decisions
                 </p>
                 <BulletList items={cs.architecture.highlights} />
@@ -204,7 +215,10 @@ export default function CaseStudyPage({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded border border-[#0F0] px-5 py-2.5 text-sm font-semibold text-[#0F0] transition-colors hover:bg-[#0F0] hover:text-black"
               >
-                {project.type === "professional" ? "Visit Live Project ↗" : "View on GitHub ↗"}
+                {project.linkLabel ??
+                  (project.type === "professional"
+                    ? "Visit Live Project"
+                    : "View on GitHub")} ↗
               </Link>
             </div>
 

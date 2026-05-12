@@ -18,12 +18,16 @@ export default function Page() {
               <ProjectCard
                 key={project.slug}
                 link={project.link}
+                linkLabel={project.linkLabel}
                 img={project.img}
                 title={project.title}
                 desc={project.shortDesc}
+                sourceNote={project.sourceNote}
                 delay={(i + 1) * 0.3}
                 stacks={project.stacks}
                 slug={project.slug}
+                youtubeLink={project.youtubeLink}
+                repoStatus={project.repoStatus}
               />
             ))}
           </div>
@@ -41,9 +45,13 @@ export default function Page() {
                 title={project.title}
                 desc={project.shortDesc}
                 link={project.link}
+                linkLabel={project.linkLabel}
+                sourceNote={project.sourceNote}
                 delay={(i + 1) * 0.3}
                 stacks={project.stacks}
                 slug={project.slug}
+                youtubeLink={project.youtubeLink}
+                repoStatus={project.repoStatus}
               />
             ))}
           </div>

@@ -56,7 +56,7 @@ export default function Page() {
         <div className="min-h-screen">
             <main className="container mx-auto px-4 pb-20 pt-8 sm:px-6 lg:pt-20">
                 <div className="flex w-full flex-col items-center justify-center">
-                    <Form onFinish={handleSubmit} className="mt-10 flex w-full max-w-md flex-col items-stretch" layout="vertical">
+                    <Form onFinish={handleSubmit} className="mt-10 flex w-full max-w-md flex-col items-stretch backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl p-6" layout="vertical">
                         <span className="mb-10 text-center text-2xl font-bold text-white sm:text-3xl">Feel free to get in touch</span>
                         <Form.Item
                             label={<label className="font-poppins text-white">Name</label>}
