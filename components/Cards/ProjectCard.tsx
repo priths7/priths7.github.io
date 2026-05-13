@@ -37,31 +37,34 @@ export const ProjectCard: FC<ProjectCardProps> = ({
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  // Check if the device can hover
-  const canHover = window.matchMedia(
-    "(hover: hover) and (pointer: fine)",
-  ).matches;
+  // Check if the device can
+  const canHover = () => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    }
+    else 
+      return false;
+  };
 
   const handleMouseEnter = () => {
-    if (canHover) {
+    if (canHover()) {
       setIsFlipped(true);
       window.dispatchEvent(new Event("pause-matrix"));
     }
   };
 
   const handleMouseLeave = () => {
-    if (canHover) {
+    if (canHover()) {
       setIsFlipped(false);
       window.dispatchEvent(new Event("resume-matrix"));
     }
   };
 
   const handleClick = () => {
-    if(!canHover)
-    {
+    if (!canHover) {
       setIsFlipped(!isFlipped);
     }
-  }
+  };
 
   const visibleStacks = stacks?.slice(0, 6) ?? [];
   const hiddenCount = Math.max((stacks?.length ?? 0) - visibleStacks.length, 0);
