@@ -61,7 +61,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   };
 
   const handleClick = () => {
-    if (!canHover) {
+    if (!canHover()) {
       setIsFlipped(!isFlipped);
     }
   };
