@@ -50,38 +50,56 @@ export const projects: Project[] = [
     img: "/deep_s.webp",
     link: "https://deepstory.co/",
     shortDesc:
-      "As a Full Stack Android developer, was responsible to design the architecture of the app for a social media app startup and develop it solely.",
+      "As a Full Stack Android developer, I designed the architecture and solely developed a social media app startup, featuring custom recommendation algorithms and real-time media handling.",
     type: "professional",
-    stacks: ["Android", "PostgreSQL", "NodeJs", "GCP"],
+    stacks: [
+      "Android",
+      "Kotlin",
+      "Node.js",
+      "PostgreSQL",
+      "Typescript",
+      "GCP",
+      "Firebase",
+      "RxJava",
+      "Amplitude",
+      "Postman", 
+      "Tailwind",
+      "Jetpack Compose",
+      "Retrofit",
+    ],
     caseStudy: {
       overview:
-        "Deepstory is a social media platform built to let users share and discover rich, story-driven content. As the sole developer, I owned the full lifecycle — from initial architecture decisions to production deployment — for both the Android client and the backend infrastructure.",
+        "Deepstory is a social media platform built to let users share and discover rich, story-driven content. As the sole developer, I owned the full lifecycle — from initial architecture decisions to production deployment — integrating custom feed algorithms, robust media handling, and comprehensive user analytics.",
       role: "Full Stack Android Developer (Sole Engineer) at Designare Solutions",
       problem:
-        "The startup needed a production-ready social media Android application with no existing codebase or infrastructure. Every architectural decision — data modeling, API design, media handling, and deployment — had to be made from scratch under startup timelines, with a single engineer responsible for delivery.",
+        "The startup needed a production-ready social media Android application built from scratch. Beyond basic CRUD operations, the platform required a custom content recommendation engine, reliable background video uploads, and deep user behavioral tracking to guide business decisions—all delivered by a single engineer.",
       solution:
-        "I designed a layered Android architecture using MVVM with clean separation between the UI, domain, and data layers. The backend was built as a RESTful Node.js service backed by PostgreSQL, deployed on Google Cloud Platform for scalability. Media assets were handled through GCP Cloud Storage to keep the database lean and CDN-friendly.",
+        "I designed a layered MVVM Android architecture using Kotlin and RxJava for reactive event handling (such as video upload progress). The backend was powered by a Node.js REST API and PostgreSQL, deployed on GCP. I implemented cron jobs to calculate per-video engagement metrics and drive a proprietary, weighted-scoring recommendation algorithm, while integrating Firebase and Amplitude for secure authentication, crash reporting, and behavioral analytics.",
       architecture: {
         summary:
-          "The system is composed of a native Android client communicating with a Node.js REST API, with PostgreSQL as the relational store and GCP Cloud Storage for media. All services run on GCP for unified infrastructure management.",
+          "A native Android client (Kotlin/MVVM) communicating with a Node.js REST API, backed by PostgreSQL for relational data and GCP Cloud Storage for media. Firebase and Amplitude handle auth and analytics, while RxJava manages asynchronous client events.",
         highlights: [
-          "MVVM architecture on Android with LiveData and ViewModel for reactive UI state",
-          "RESTful Node.js API with JWT-based authentication and role-based access control",
-          "PostgreSQL schema designed for social graph relationships (follows, likes, comments)",
-          "GCP Cloud Storage for user-uploaded media with signed URL access",
-          "Deployed on GCP Compute Engine with environment-based configuration",
-          "Retrofit + OkHttp on Android for typed, interceptor-based HTTP communication",
+          "MVVM architecture on Android using Kotlin, LiveData, and ViewModel for reactive UI state",
+          "RxJava implemented for publisher events and asynchronous tracking, specifically managing background video upload progress",
+          "RESTful Node.js API handling core social features (likes, comments, video uploads) backed by PostgreSQL",
+          "Maintained a centralized Postman workspace documenting the entire REST API ecosystem to ensure seamless integration and testing",
+          "Custom cron jobs implemented to calculate per-video engagement counts (views, likes, comments)",
+          "Proprietary, category-based recommendation engine utilizing a weighted scoring system to tailor user-specific feeds",
+          "GCP Cloud Storage integration for scalable user-uploaded media management",
+          "Firebase suite integrated for Authentication, Crashlytics, and core user tracking",
+          "Amplitude integrated for deep behavioral analytics to capture and analyze user engagement patterns",
         ],
       },
       challenges: [
         "Designing a scalable social graph schema in PostgreSQL without over-engineering for a startup's early user base",
-        "Managing real-time feed personalization with limited infrastructure budget",
-        "Sole ownership across Android, API, and DevOps required context-switching with no safety net",
-        "Handling media upload flows on Android with background workers while keeping UX responsive",
+        "Engineering a proprietary, weighted recommendation algorithm and orchestrating cron jobs to process per-video metrics efficiently",
+        "Handling heavy media upload flows on Android using RxJava and background workers while keeping the UX responsive",
+        "Sole ownership across Android, API, DevOps, and analytics integration requiring intense context-switching",
       ],
       impact: [
-        "Delivered a fully functional social media Android app from zero to production as a single engineer",
-        "Architecture decisions allowed the team to onboard additional developers without major refactoring",
+        "Delivered a fully functional, data-driven social media Android app from zero to production as a single engineer",
+        "Enabled tailored user experiences and targeted content delivery through the custom weighted-scoring recommendation engine",
+        "Provided leadership with actionable user behavior insights via Amplitude and Firebase integration",
         "Established a reliable GCP-based deployment pipeline reused across subsequent projects",
       ],
     },
@@ -92,39 +110,56 @@ export const projects: Project[] = [
     img: "/leisurely.webp",
     link: "https://stayleisurely.com/",
     shortDesc:
-      "Designed and developed a booking service management platform for a startup to book villas.",
+      "Redesigned and functionally overhauled an existing villa booking platform, delivering a cleaner UX, custom management tools, and seamless property synchronization.",
     type: "professional",
-    stacks: ["React", "PostgreSQL", "NodeJs", "GCP"],
+    stacks: [
+      "React",
+      "PostgreSQL",
+      "Node.js",
+      "GCP",
+      "Typescript",
+      "Firebase",
+      "Guesty API",
+      "Razorpay",
+      "Postman",
+      "Tailwind",
+      "Axios",
+      "Context API"
+    ],
     caseStudy: {
       overview:
-        "Stay Leisurely is a villa booking platform built for a hospitality startup. I designed and developed the full-stack web application — from the guest-facing booking flow to the property management layer — enabling the business to accept and manage reservations end-to-end.",
+        "Stay Leisurely is a villa booking platform for a hospitality startup. I spearheaded the redesign and functional overhaul of their existing website, transforming it into a clean, highly customized full-stack web application. The revamped system features a modernized guest booking flow, a secure, role-based internal CMS, and intelligent integrations with the Guesty PMS.",
       role: "Full Stack Developer at Designare Solutions",
       problem:
-        "The client was managing villa reservations manually through phone calls and spreadsheets. They needed a polished customer-facing booking experience alongside an internal management interface to track availability, reservations, and guest communication — all within a tight delivery window.",
+        "The client had an existing website, but it was cluttered, functionally limited, and still required manual intervention (phone calls, spreadsheets) to manage actual reservations. They needed their platform modernized with a cleaner user experience, custom booking functionalities tailored to their workflow, and a robust, secure admin interface to manage inventory without double-booking.",
       solution:
-        "Built a React web application for the guest-facing booking flow with a Node.js backend exposing a REST API. PostgreSQL handled relational reservation data with availability windows modeled carefully to prevent double-bookings. The platform was deployed on GCP for reliability and ease of scaling during peak seasons.",
+        "Overhauled the existing website into a modern React application, focusing on a cleaner UI and frictionless guest-facing workflows utilizing Firebase for onboarding. To replace their manual processes, I built a highly customized Admin CMS featuring Role-Based Access Control (RBAC), ensuring that staff members only had authorization for specific, necessary modifications. I also engineered a Node.js synchronization backend: properties managed locally are handled via PostgreSQL, while external properties use automated cron jobs to sync pricing and availability with the Guesty API. Razorpay was integrated to handle secure payments seamlessly.",
       architecture: {
         summary:
-          "A React SPA for the customer booking journey, backed by a Node.js API layer and PostgreSQL. GCP Cloud Run handled containerised backend deployment for cost-effective scaling.",
+          "A modernized React SPA replacing the legacy frontend, backed by a new Node.js API layer and PostgreSQL. GCP Cloud Run handled containerised backend deployment, with GCP securely storing property, user, and Razorpay transaction data.",
         highlights: [
-          "React frontend with component-driven UI for property browsing, date selection, and checkout",
-          "Availability engine in PostgreSQL preventing overlapping reservation windows via constraint-level validation",
-          "Node.js REST API handling reservation lifecycle: create, confirm, cancel, and modify flows",
-          "Email notification pipeline for booking confirmations and reminders using Nodemailer",
-          "Admin dashboard for property managers to view and action upcoming reservations",
+          "Complete UI/UX redesign of the legacy website into a modern, component-driven React application",
+          "Custom Admin CMS with granular Role-Based Access Control (RBAC) governing modifications to property listings, pricing, and availability",
+          "Smart synchronization engine using a property-level sync flag to seamlessly toggle between local database management and external Guesty PMS management",
+          "Maintained a centralized Postman workspace documenting the entire REST API ecosystem to ensure seamless integration and testing",
+          "Automated Node.js cron jobs utilizing Guesty IDs to fetch and update property pricing and availability via optimized batch processing",
+          "Razorpay payment gateway integration for secure, seamless checkout flows and transaction logging",
+          "Firebase integration for secure and streamlined guest onboarding and authentication",
           "Deployed on GCP with environment-based config management and zero-downtime deployments",
         ],
       },
       challenges: [
-        "Modeling villa availability accurately in PostgreSQL to prevent race conditions on simultaneous booking attempts",
-        "Building an admin experience alongside the guest UI within a shared codebase without coupling concerns",
-        "Handling payment and cancellation edge cases at the data layer without a dedicated payment microservice",
-        "Ensuring mobile-first responsiveness for a booking flow that guests primarily access from phones",
+        "Refactoring and modernizing the existing platform's UX/UI while introducing complex new backend functionality without disrupting the business",
+        "Implementing a robust RBAC authorization matrix that flexibly accommodated the startup's internal team structure without overly restricting operations",
+        "Designing an efficient batch-processing cron architecture to sync Guesty API data across multiple properties simultaneously",
+        "Reconciling availability states dynamically based on the sync parameter to ensure the booking engine always queried the correct source of truth",
+        "Handling Razorpay payment states reliably to ensure transaction records in GCP remained accurate even during network interruptions",
       ],
       impact: [
-        "Replaced a fully manual reservation process with a self-serve booking platform",
-        "Reduced reservation errors and double-bookings to zero through database-level availability enforcement",
-        "Enabled the client to scale villa listings independently through the admin management interface",
+        "Transformed a functionally limited, existing website into a clean, automated, and high-converting self-serve booking platform",
+        "Eliminated manual reservation tracking and double-bookings by establishing a strict single source of truth for every property",
+        "Optimized system performance and API usage by implementing batched cron jobs for external inventory synchronization",
+        "Empowered the client with a secure, custom CMS tailored specifically to their operational requirements and team roles",
       ],
     },
   },
@@ -136,36 +171,53 @@ export const projects: Project[] = [
     shortDesc:
       "Designed and developed a robust appointment booking platform for patients for a healthcare startup, streamlining scheduling processes for medical appointments.",
     type: "professional",
-    stacks: ["React", "PostgreSQL", "NodeJs", "GCP"],
+    stacks: [
+      "React",
+      "PostgreSQL",
+      "Node.js",
+      "GCP",
+      "TypeScript",
+      "Firebase",
+      "PhonePe",
+      "WhatsApp API",
+      "Postman",
+      "Tailwind",
+      "Axios",
+      "Context API"
+    ],
     caseStudy: {
       overview:
-        "Lyfsum is a healthcare appointment booking platform connecting patients with medical providers. I built the full-stack system — patient search and discovery, doctor availability, and appointment management — for a healthcare startup aiming to simplify how people access medical care.",
+        "Lyfsum is a healthcare appointment booking platform connecting patients with medical providers. I built the full-stack system — patient search and discovery, doctor availability, payment processing, and appointment management — for a healthcare startup aiming to simplify how people access medical care.",
       role: "Full Stack Developer at Designare Solutions",
       problem:
         "Healthcare appointment scheduling is fragmented: patients call multiple clinics, face hold times, and still end up with inconvenient slots. The startup needed a unified platform where patients could search for providers by specialty, view real-time availability, and confirm bookings in a single flow — without requiring heavy infrastructure investment.",
       solution:
-        "Built a React web app with provider search, filtering by specialty and location, and a calendar-based slot picker. The Node.js backend handled appointment state management (pending, confirmed, cancelled, completed) with PostgreSQL as the relational store. Provider availability was modeled as recurring and exception-based windows to support real clinical scheduling patterns.",
+        "Built a React web app with provider search, filtering by specialty and location, and a calendar-based slot picker, utilizing Firebase for seamless user authentication. To reduce friction, I integrated a conversational booking flow and automated confirmations via WhatsApp using the Facebook API. The Node.js backend handled appointment state management with PostgreSQL, while PhonePe was integrated to securely process patient payments.",
       architecture: {
         summary:
-          "A React SPA for the patient-facing booking experience, a Node.js REST API for appointment and provider management, and PostgreSQL for relational healthcare data. Deployed on GCP with Cloud SQL for managed database infrastructure.",
+          "A React SPA for the patient-facing web experience, Firebase for authentication, a Node.js REST API for appointment and provider management, and PostgreSQL on GCP Cloud SQL for relational healthcare data. Extended reach via WhatsApp Business API and handled financial transactions through PhonePe.",
         highlights: [
           "Provider search with specialty, location, and availability filters using parameterised SQL queries",
+          "Firebase Authentication integration for secure and frictionless user onboarding",
+          "Maintained a centralized Postman workspace documenting the entire REST API ecosystem to ensure seamless integration and testing",
+          "WhatsApp Business API integration via Facebook for conversational booking and real-time confirmation notifications",
+          "PhonePe payment gateway integration for secure transaction processing",
           "Slot availability engine supporting recurring schedules with override/exception windows",
           "Appointment state machine (requested → confirmed → completed / cancelled) enforced at the API layer",
           "Role-aware API: patients and providers have distinct access scopes via JWT claims",
-          "Email and in-app notification system for appointment reminders and status updates",
           "PostgreSQL on GCP Cloud SQL for managed, HIPAA-considerate data storage",
         ],
       },
       challenges: [
         "Modeling provider availability windows that support recurring schedules, exceptions, and real-time slot blocking",
-        "Preventing double-booking under concurrent appointment requests for the same slot",
+        "Synchronizing appointment states concurrently between the web app and the WhatsApp conversational flow",
+        "Handling asynchronous payment webhooks from PhonePe reliably to prevent double-booking or dropped transactions",
         "Designing a data model that could accommodate multiple provider types without schema migrations per type",
-        "Keeping the patient search experience fast with compound availability + specialty filtering",
       ],
       impact: [
         "Delivered a production-ready healthcare booking platform from design to deployment",
-        "Eliminated phone-based scheduling friction for patients through a self-serve booking flow",
+        "Increased patient accessibility and engagement by enabling frictionless booking and instant confirmations directly through WhatsApp",
+        "Eliminated phone-based scheduling friction for patients through a self-serve web and chat booking flow",
         "Supported multiple provider types and specialties under a unified data model with no schema rework",
       ],
     },
@@ -226,7 +278,7 @@ export const projects: Project[] = [
     shortDesc:
       "A privacy-first, local-offline AI journaling application with eventual cloud synchronization, capable of running local models for RAG.", //
     type: "personal",
-    stacks: ["Rust", "Tauri", "React", "SQLite", "Hugging Face"],
+    stacks: ["Rust", "Tauri", "React", "SQLite", "Hugging Face", "TypeScript"],
     caseStudy: {
       overview:
         "A privacy-first, local-offline AI journaling application built on a local-first architecture based on the model of an operating system. It utilizes a hybrid RAG (Retrieval-Augmented Generation) pipeline, seamlessly merging encrypted journal memory with local workspace context.",
@@ -261,7 +313,7 @@ export const projects: Project[] = [
   {
     slug: "distributed-file-retrieval",
     title: "Distributed File Retrieval Engine",
-    img: "/file-engine.webp", 
+    img: "/file-engine.webp",
     link: "https://github.com/transcendental-software/csc-435-ea-priths7",
     repoStatus: "private",
     shortDesc:
@@ -302,8 +354,7 @@ export const projects: Project[] = [
     title: "Image Generation Model",
     img: "/generate.webp",
     link: "https://github.com/priths7/ImageGenerationModel",
-    shortDesc:
-      "A stable diffusion model to generate images built on PyTorch.",
+    shortDesc: "A stable diffusion model to generate images built on PyTorch.",
     type: "personal",
     stacks: ["PyTorch", "Python"],
     caseStudy: {
@@ -319,24 +370,24 @@ export const projects: Project[] = [
           "A three-component pipeline: VAE for latent compression/decompression, a U-Net denoiser with cross-attention for text conditioning, and a noise scheduler controlling the reverse diffusion process.",
         highlights: [
           "Variational Autoencoder (VAE) for encoding images into a 4-channel latent space and decoding generated latents back to pixel space",
-        "U-Net architecture with ResNet blocks and multi-head cross-attention for conditioning on CLIP text embeddings",
-        "DDPM noise scheduler implementing the forward diffusion process (for image-to-image) and reverse denoising",
-        "Text prompt conditioning via CLIP ViT embeddings injected through cross-attention at multiple U-Net resolutions",
-        "Custom script to map and load standard pre-trained Stable Diffusion weights (v1-5) into the custom PyTorch architecture"
+          "U-Net architecture with ResNet blocks and multi-head cross-attention for conditioning on CLIP text embeddings",
+          "DDPM noise scheduler implementing the forward diffusion process (for image-to-image) and reverse denoising",
+          "Text prompt conditioning via CLIP ViT embeddings injected through cross-attention at multiple U-Net resolutions",
+          "Custom script to map and load standard pre-trained Stable Diffusion weights (v1-5) into the custom PyTorch architecture",
+        ],
+      },
+      challenges: [
+        "Aligning tensor dimensions across the U-Net's multi-resolution skip connections and cross-attention heads",
+        "Mapping pre-trained Stable Diffusion weights accurately into custom implemented PyTorch classes and layers",
+        "Managing memory efficiently during inference, implementing device offloading strategies across CPU, CUDA, and MPS",
+        "Accurately reproducing the DDPM reverse process steps and variance calculations to denoise latents correctly",
+      ],
+      impact: [
+        "Built a working end-to-end text-to-image and image-to-image generation inference pipeline from mathematical foundations",
+        "Developed deep intuition for latent diffusion, attention mechanisms, and noise scheduling",
+        "Published as an open-source reference implementation on GitHub",
       ],
     },
-    "challenges": [
-      "Aligning tensor dimensions across the U-Net's multi-resolution skip connections and cross-attention heads",
-      "Mapping pre-trained Stable Diffusion weights accurately into custom implemented PyTorch classes and layers",
-      "Managing memory efficiently during inference, implementing device offloading strategies across CPU, CUDA, and MPS",
-      "Accurately reproducing the DDPM reverse process steps and variance calculations to denoise latents correctly"
-    ],
-    "impact": [
-      "Built a working end-to-end text-to-image and image-to-image generation inference pipeline from mathematical foundations",
-      "Developed deep intuition for latent diffusion, attention mechanisms, and noise scheduling",
-      "Published as an open-source reference implementation on GitHub"
-    ]
-  }
   },
   {
     slug: "similar-image-recommender",
@@ -359,27 +410,27 @@ export const projects: Project[] = [
         summary:
           "A TensorFlow/Keras feature extraction pipeline using both a headless pre-trained VGG16 model and a custom Autoencoder, a vector index of pre-computed embeddings, and Euclidean distance ranking for query-time retrieval.",
         highlights: [
-          "Pre-trained VGG16 CNN backbone with the classification head removed to expose 4096-dim feature vectors from the 'fc1' layer.", 
+          "Pre-trained VGG16 CNN backbone with the classification head removed to expose 4096-dim feature vectors from the 'fc1' layer.",
           "Custom Convolutional Autoencoder trained from scratch to compress images into a dense 16-dim latent space representation.",
-          "Batch pre-computation of embeddings for the reference image dataset stored as a NumPy index/pickle file.", 
-          "Euclidean distance computed between query embedding and all reference vectors for ranked retrieval.", 
-          "TensorFlow image preprocessing pipeline matching the training-time normalisation.", 
+          "Batch pre-computation of embeddings for the reference image dataset stored as a NumPy index/pickle file.",
+          "Euclidean distance computed between query embedding and all reference vectors for ranked retrieval.",
+          "TensorFlow image preprocessing pipeline matching the training-time normalisation.",
           "Top-K retrieval with distance scores returned alongside matched images.",
-          "Evaluation includes comparing both Euclidean distance of visual features and text similarity of product categories."
+          "Evaluation includes comparing both Euclidean distance of visual features and text similarity of product categories.",
         ],
       },
       challenges: [
         "Choosing the right layer depth for feature extraction — too shallow loses semantic meaning, too deep overfits to ImageNet classes.",
-        "Designing and training an effective Convolutional Autoencoder architecture to capture meaningful visual representations in a highly compressed latent space.", 
-        "Normalising embeddings consistently between pre-computation and query time to avoid distance distortion.", 
-        "Scaling the similarity search efficiently as the reference dataset grows.", 
-        "Evaluating retrieval quality without labelled ground-truth pairs, mitigated by checking category similarity." 
+        "Designing and training an effective Convolutional Autoencoder architecture to capture meaningful visual representations in a highly compressed latent space.",
+        "Normalising embeddings consistently between pre-computation and query time to avoid distance distortion.",
+        "Scaling the similarity search efficiently as the reference dataset grows.",
+        "Evaluating retrieval quality without labelled ground-truth pairs, mitigated by checking category similarity.",
       ],
       impact: [
-        "Demonstrated content-based image retrieval without any manual labelling or metadata.", 
+        "Demonstrated content-based image retrieval without any manual labelling or metadata.",
         "Compared performance between transfer learning (VGG16) and custom representation learning (Autoencoder).",
-        "Achieved visually coherent similarity rankings across diverse image categories.", 
-        "Open-sourced as an educational reference for embedding-based retrieval systems." 
+        "Achieved visually coherent similarity rankings across diverse image categories.",
+        "Open-sourced as an educational reference for embedding-based retrieval systems.",
       ],
     },
   },
@@ -413,15 +464,15 @@ export const projects: Project[] = [
         ],
       },
       challenges: [
-        "Combining global CNN features with sequential LSTM states via a merge architecture", 
-        "Integrating pre-trained GloVe embeddings efficiently into the embedding layer", 
-        "Managing large MS-COCO dataset size with a custom Python generator to avoid memory exhaustion", 
-        "Preprocessing sequence data to create multiple input-output pairs for next-token prediction"
+        "Combining global CNN features with sequential LSTM states via a merge architecture",
+        "Integrating pre-trained GloVe embeddings efficiently into the embedding layer",
+        "Managing large MS-COCO dataset size with a custom Python generator to avoid memory exhaustion",
+        "Preprocessing sequence data to create multiple input-output pairs for next-token prediction",
       ],
       impact: [
-        "Produced a working image captioning pipeline from visual input to natural language output", 
-        "Demonstrated a practical merge-based multimodal architecture for vision and language", 
-        "Published as an accessible open-source reference for image captioning with TensorFlow"
+        "Produced a working image captioning pipeline from visual input to natural language output",
+        "Demonstrated a practical merge-based multimodal architecture for vision and language",
+        "Published as an accessible open-source reference for image captioning with TensorFlow",
       ],
     },
   },
@@ -452,7 +503,7 @@ export const projects: Project[] = [
           "Timestamp logging for the start and end of continuous motion events, exported to a CSV file",
           "Data manipulation and formatting using Pandas DataFrames",
           "Interactive time-series graphing using Bokeh with hover tools to display precise event timings",
-          "Detection sensitivity configurable via minimum contour area thresholds" 
+          "Detection sensitivity configurable via minimum contour area thresholds",
         ],
       },
       challenges: [
@@ -468,8 +519,6 @@ export const projects: Project[] = [
       ],
     },
   },
-  
-  
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {

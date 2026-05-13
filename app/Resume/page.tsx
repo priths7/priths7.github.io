@@ -5,7 +5,7 @@ import { WorkEx } from "@/sections/Resume/WorkEx";
 export default function Page() {
   return (
     <div className="min-h-screen">
-      <main className="container mx-auto flex flex-col items-center gap-10 pb-20 pt-8 sm:px-6 md:px-[15px] backdrop-blur-sm rounded-2xl border border-white/10 shadow-2xl">
+      <main className="container mx-auto flex flex-col items-center gap-16 px-4 pb-20 pt-8 backdrop-blur-sm sm:px-6 md:px-[15px]">
         <Details />
         <Education />
         <WorkEx />

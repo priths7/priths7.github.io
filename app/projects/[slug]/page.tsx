@@ -26,8 +26,8 @@ export async function generateMetadata({
 // ── Section heading helper ────────────────────────────────────────────────────
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mb-3 flex items-center gap-2 font-semibold uppercase tracking-widest text-[#0F0] text-xs sm:text-sm">
-      <span className="inline-block h-px w-6 bg-[#0F0]" />
+    <h2 className="mb-3 flex items-center gap-2 font-semibold uppercase tracking-widest font-mono text-green-400 text-xs sm:text-sm">
+      <span className="inline-block h-px w-6 bg-green-400" />
       {children}
     </h2>
   );
@@ -36,7 +36,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 // ── Pill ─────────────────────────────────────────────────────────────────────
 function StackTag({ text }: { text: string }) {
   return (
-    <span className="rounded border border-[#0F0]/40 bg-[#0F0]/5 px-2.5 py-1 font-mono text-xs text-[#0F0]">
+    <span className="rounded border border-green-400 bg-[#0F0]/5 px-2.5 py-1 font-mono text-xs text-green-400">
       {text}
     </span>
   );
@@ -48,7 +48,7 @@ function BulletList({ items }: { items: string[] }) {
     <ul className="space-y-2">
       {items.map((item, i) => (
         <li key={i} className="flex gap-3 text-sm leading-relaxed text-white/80">
-          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#0F0]" />
+          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-green-400" />
           {item}
         </li>
       ))}
@@ -101,7 +101,7 @@ export default function CaseStudyPage({
           {/* ── Back breadcrumb ── */}
           <Link
             href="/Portfolio"
-            className="mb-10 inline-flex items-center gap-2 text-xs text-white/50 transition-colors hover:text-[#0F0]"
+            className="mb-10 inline-flex items-center gap-2 text-xs text-white/50 transition-colors hover:text-green-400"
           >
             ← Back to Portfolio
           </Link>
@@ -118,7 +118,7 @@ export default function CaseStudyPage({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             <div className="absolute bottom-4 left-5">
-              <p className="mb-1 font-mono text-[10px] uppercase tracking-widest text-[#0F0]/80">
+              <p className="mb-1 font-mono text-[10px] uppercase tracking-widest text-green-400">
                 {project.type === "professional" ? "Professional" : "Personal"} Project
               </p>
               <h1 className="text-2xl font-bold text-white sm:text-3xl">
@@ -184,7 +184,7 @@ export default function CaseStudyPage({
                 {cs.architecture.summary}
               </p>
               <div className="rounded-lg border border-white/10 bg-white/[0.03] p-5">
-                <p className="mb-4 font-mono text-[12px] uppercase tracking-widest text-[#0F0]/60">
+                <p className="mb-4 font-mono text-[12px] uppercase tracking-widest text-green-400">
                   Key Design Decisions
                 </p>
                 <BulletList items={cs.architecture.highlights} />
@@ -213,7 +213,7 @@ export default function CaseStudyPage({
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded border border-[#0F0] px-5 py-2.5 text-sm font-semibold text-[#0F0] transition-colors hover:bg-[#0F0] hover:text-black"
+                className="inline-flex items-center gap-2 rounded border border-green-400 px-5 py-2.5 text-sm font-semibold text-green-400 transition-colors hover:bg-green-400 hover:text-black"
               >
                 {project.linkLabel ??
                   (project.type === "professional"
@@ -230,12 +230,12 @@ export default function CaseStudyPage({
               {prev ? (
                 <Link
                   href={`/projects/${prev.slug}`}
-                  className="group flex flex-col rounded-lg border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-[#0F0]/40"
+                  className="group flex flex-col rounded-lg border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-green-400"
                 >
                   <span className="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/40">
                     ← Previous
                   </span>
-                  <span className="text-sm font-semibold text-white group-hover:text-[#0F0]">
+                  <span className="text-sm font-semibold text-white group-hover:text-green-400">
                     {prev.title}
                   </span>
                 </Link>
@@ -245,12 +245,12 @@ export default function CaseStudyPage({
               {next ? (
                 <Link
                   href={`/projects/${next.slug}`}
-                  className="group flex flex-col items-end rounded-lg border border-white/10 bg-white/[0.03] p-4 text-right transition-colors hover:border-[#0F0]/40"
+                  className="group flex flex-col items-end rounded-lg border border-white/10 bg-white/[0.03] p-4 text-right transition-colors hover:border-green-400"
                 >
                   <span className="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/40">
                     Next →
                   </span>
-                  <span className="text-sm font-semibold text-white group-hover:text-[#0F0]">
+                  <span className="text-sm font-semibold text-white group-hover:text-green-400">
                     {next.title}
                   </span>
                 </Link>

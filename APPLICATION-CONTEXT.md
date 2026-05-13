@@ -6,10 +6,10 @@
 ## Tech Stack
 * **Framework:** Next.js 14 App Router with React 18 and TypeScript
 * **Styling:** Tailwind CSS with global Poppins font import
-* **Animation:** Framer Motion for interactive project cards
+* **Animation:** CSS 3D transforms for project-card flips; Framer Motion remains in use for the Resume skill visualizer
 * **Canvas Effects:** Custom Matrix rain and 3D room-style background components
 * **UI Library:** Ant Design for the contact form controls
-* **Backend Contact Service:** Express + Nodemailer in `smtp-backend/`
+* **Backend Contact Service:** Express + Nodemailer in the nested `smtp-backend/` service
 * **Optional Data Backend:** Supabase can be reused from the private journal setup if the portfolio needs dynamic data, storage, analytics, or a lightweight CMS
 * **Deployment:** Vercel for the main portfolio and a separate Vercel-hosted SMTP/contact backend
 
@@ -22,12 +22,12 @@
 * **Hero Experience:** `sections/Home/Header.tsx` renders the homepage hero with Prithvi's name and rotating scrambled role text.
 * **Project Data Source:** `data/projects.ts` is the single source of truth for all project metadata and case study content. Exports a typed `Project[]` array plus `getProjectBySlug()` and `getAdjacentProjects()` helpers.
 * **Project Showcase:** `app/Portfolio/page.tsx` is now data-driven, filtering from `data/projects.ts` into professional and personal sections.
-* **Project Cards:** `components/Cards/ProjectCard.tsx` uses Framer Motion to flip cards. The back face now renders a "View Case Study →" button (when a `slug` prop is passed) and a "Visit ↗" external link, both with `e.stopPropagation()` to prevent flip interference.
+* **Project Cards:** `components/Cards/ProjectCard.tsx` uses CSS `rotateY` transforms for the flip interaction. The back face renders a "View Case Study →" button when a `slug` prop is passed, optional "Watch Demo" button, private-repo badge support, and a "Visit ↗" external link, with link clicks stopping card-flip propagation.
 * **Case Study Pages:** `app/projects/[slug]/page.tsx` is a dynamic route rendering a full case study per project. Generates static params from `data/projects.ts` and page-level metadata. Layout: hero image, stack tags, overview, role, problem/solution (two-col), architecture highlights, challenges/impact (two-col), external link, and prev/next navigation. Uses a subtle scanline overlay and vignette — no high-motion background behind article text.
-* **Skills Pills:** `components/Cards/Pill.tsx` renders stack tags for each project card.
-* **Resume Page:** `app/Resume/page.tsx` composes `Details`, `Education`, and `WorkEx` sections.
+* **Skills Pills:** `components/Cards/Pill.tsx` renders stack tags for each project card. `components/Skills/SkillsVisual.tsx` derives categorized skill pills from `data/projects.ts` for the Resume route.
+* **Resume Page:** `app/Resume/page.tsx` composes `Details`, `Education`, and `WorkEx` sections. `Education` is presented as a compact green-accented grid; `WorkEx` is presented as a Matrix-themed timeline.
 * **Contact Flow:** `app/Contact/page.tsx` submits form data to `https://smtp-backend-psi.vercel.app/api/contact`.
-* **SMTP Backend:** `smtp-backend/server.js` exposes `/api/contact` and `/api/health`, validates required form fields, and sends email through Gmail SMTP using environment variables.
+* **SMTP Backend:** `smtp-backend/server.js` exposes `/api/contact` and `/api/health`, validates required form fields, and sends email through Office365 SMTP (`smtp.office365.com`) using `EMAIL_USER` and `APP_PASSWORD` environment variables. The current implementation sends contact submissions to `process.env.EMAIL_USER`.
 * **Static Assets:** Screenshots, icons, certificates, and portfolio imagery live in `public/`.
 * **Supabase Direction:** Supabase is not currently wired into this portfolio, but it is a viable future backend for blog metadata, contact-message persistence, newsletter subscribers, lightweight analytics, or image/file storage.
 
@@ -123,11 +123,12 @@
 2. **Protect Readability:** Do not use high-motion backgrounds directly behind long article text. Use the scanline + vignette pattern established in the case study page.
 3. **Asset Casing Matters:** Vercel/Linux deployments are case-sensitive. Match imports and image paths exactly.
 4. **Do Not Commit Secrets:** Keep `.env.local` and `smtp-backend/.env` private.
-5. **Contact Backend Boundary:** The main portfolio currently depends on a separately hosted backend endpoint for contact submissions.
-6. **Avoid Heavy Homepage Bloat:** Keep the first screen focused on identity and clear calls to action.
-7. **Mobile Responsiveness:** All new cards, blog lists, and article layouts must fit small screens without text overlap.
-8. **Single Source of Truth:** All project data lives in `data/projects.ts`. Never duplicate project metadata into route files or JSX.
-9. **Canvas Performance Architecture:** `MatrixRain.tsx` must rely on a strictly hard-paced Game Loop. Use pure `requestAnimationFrame` timestamps (no `performance.now()`), pre-calculated color batching (no `rgba` alpha-blending overhead), and Dynamic Delta Clamping to protect against Negative Delta Drift and Tab-Switch stutters.
+5. **Contact Backend Boundary:** The main portfolio currently depends on a separately hosted backend endpoint for contact submissions. The frontend endpoint is hardcoded in `app/Contact/page.tsx`.
+6. **Nested SMTP Repo:** `smtp-backend/` is a nested Git repository with its own dependencies and deployment lifecycle; root-level Git commands may not report its changes.
+7. **Avoid Heavy Homepage Bloat:** Keep the first screen focused on identity and clear calls to action.
+8. **Mobile Responsiveness:** All new cards, blog lists, and article layouts must fit small screens without text overlap.
+9. **Single Source of Truth:** All project data lives in `data/projects.ts`. Never duplicate project metadata into route files or JSX.
+10. **Canvas Performance Architecture:** `MatrixRain.tsx` must rely on a strictly hard-paced Game Loop. Use pure `requestAnimationFrame` timestamps (no `performance.now()`), pre-calculated color batching (no `rgba` alpha-blending overhead), and Dynamic Delta Clamping to protect against Negative Delta Drift and Tab-Switch stutters.
 
 ---
 
@@ -137,8 +138,9 @@
 * Next.js App Router project structure is in place.
 * Shared navigation exists for Home, Portfolio, Resume, and Contact.
 * Portfolio page displays professional and personal projects.
-* Resume page composes details, education, and work experience sections (ensuring general CS focus and correct Designare tenure).
+* Resume page composes details, an interactive skill visualizer, a green-accented education grid, and a Matrix-themed work-experience timeline.
 * Contact page submits messages to the deployed SMTP backend.
+* Phase 2.5 Resume Enhancements: interactive skill visualizer, categorized tabs, and themed Education/WorkEx layouts are implemented.
 * Phase 1 Polish: Metadata updated, typos fixed, public asset casing standardized, and copy tightened.
 * **Phase 2: Case Studies** — fully complete:
   * `data/projects.ts` created as the single source of truth.
@@ -148,6 +150,7 @@
 
 ### In Progress
 * **Pre-Phase 3: Matrix Performance Polish:** Resolving persistent tab-switch stutter and edge-case V-Sync drift within the `MatrixRain.tsx` canvas. This is a critical minor step before introducing heavier blog content to ensure global shell performance remains butter-smooth.
+* **Contact Backend Migration Check:** `smtp-backend/server.js` has been changed to Office365 SMTP, but deployed Vercel environment variables and redeployment status must be verified if contact mail still routes to Gmail.
 
 ### Not Started
 * Phase 3: Blog Foundation.
