@@ -70,7 +70,7 @@ export const projects: Project[] = [
     caseStudy: {
       overview:
         "Deepstory is a social media platform built to let users share and discover rich, story-driven content. As the sole developer, I owned the full lifecycle — from initial architecture decisions to production deployment — integrating custom feed algorithms, robust media handling, and comprehensive user analytics.",
-      role: "Full Stack Android Developer (Sole Engineer) at Designare Solutions",
+      role: "Full Stack Android Developer at Designare Solutions",
       problem:
         "The startup needed a production-ready social media Android application built from scratch. Beyond basic CRUD operations, the platform required a custom content recommendation engine, reliable background video uploads, and deep user behavioral tracking to guide business decisions—all delivered by a single engineer.",
       solution:
@@ -356,6 +356,7 @@ export const projects: Project[] = [
     link: "https://github.com/priths7/ImageGenerationModel",
     shortDesc: "A stable diffusion model to generate images built on PyTorch.",
     type: "personal",
+    repoStatus: "public",
     stacks: ["PyTorch", "Python"],
     caseStudy: {
       overview:
@@ -397,6 +398,7 @@ export const projects: Project[] = [
     shortDesc:
       "An image feature extraction engine that quantifies visual similarity between images using deep learning embeddings and autoencoders.",
     type: "personal",
+    repoStatus: "public",
     stacks: ["TensorFlow", "Python", "Keras"],
     caseStudy: {
       overview:
@@ -442,6 +444,7 @@ export const projects: Project[] = [
     shortDesc:
       "A TensorFlow-based image captioning model that generates natural language descriptions for a given input image.",
     type: "personal",
+    repoStatus: "public",
     stacks: ["TensorFlow", "Python", "Jupyter Notebook"],
     caseStudy: {
       overview:
@@ -484,6 +487,7 @@ export const projects: Project[] = [
     shortDesc:
       "A real-time motion detection tool that captures video, logs activity intervals using OpenCV, and plots an interactive time-series graph using Bokeh and Pandas.",
     type: "personal",
+    repoStatus: "public",
     stacks: ["OpenCV", "Python", "Pandas", "Bokeh"],
     caseStudy: {
       overview:

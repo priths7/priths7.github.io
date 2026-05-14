@@ -208,7 +208,7 @@ export default function CaseStudyPage({
             <Divider />
 
             {/* ── External link ── */}
-            <div className="flex items-center gap-4">
+            { project.repoStatus === "public" && <div className="flex items-center gap-4">
               <Link
                 href={project.link}
                 target="_blank"
@@ -220,7 +220,8 @@ export default function CaseStudyPage({
                     ? "Visit Live Project"
                     : "View on GitHub")} ↗
               </Link>
-            </div>
+            </div>}
+            
 
           </div>
 
