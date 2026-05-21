@@ -1,5 +1,5 @@
 # Project: Prithvi Portfolio
-**Objective:** A personal developer portfolio hosted at `https://priths7.vercel.app/` that presents Prithvi Chakravarthy's full-stack, mobile, cloud, and machine-learning work through a dark Matrix-inspired interface. The next major product direction is a blog section for technical writing and deeper project case studies while preserving the current theme.
+**Objective:** A personal developer portfolio hosted at `https://prithvic.dev/` that presents Prithvi Chakravarthy's full-stack, mobile, cloud, and machine-learning work through a dark Matrix-inspired interface. The next major product direction is a blog section for technical writing and deeper project case studies while preserving the current theme.
 
 ---
 
@@ -10,6 +10,7 @@
 * **Canvas Effects:** Custom Matrix rain and 3D room-style background components
 * **UI Library:** Ant Design for the contact form controls
 * **Backend Contact Service:** Express + Nodemailer in the nested `smtp-backend/` service
+* **Content Layer:** MDX files under `content/blog/` and `content/projects/` serve as the Git-based CMS for blog posts and supplementary project narratives. `data/projects.ts` remains the authoritative source for structured project metadata consumed by the Portfolio page and case study routes.
 * **Optional Data Backend:** Supabase can be reused from the private journal setup if the portfolio needs dynamic data, storage, analytics, or a lightweight CMS
 * **Deployment:** Vercel for the main portfolio and a separate Vercel-hosted SMTP/contact backend
 
@@ -48,7 +49,10 @@
 ### Root Level
 *(Standard Next.js configuration files, environment variables, and READMEs)*
 * `APPLICATION-CONTEXT.md` | Living project context for future development sessions
-* `data/projects.ts` | Single source of truth for all project and case study data
+* `data/projects.ts` | Single source of truth for all structured project metadata
+* `content/blog/` | MDX blog posts (Git-based authoring — added in Phase 2.7)
+* `content/projects/` | Optional MDX files for extended project narratives (added in Phase 2.7)
+* `lib/mdx.ts` | MDX parsing utilities: `getAllPosts()`, `getPostBySlug()`, frontmatter extraction
 * `app/` | Next.js App Router routes and global layout/styles
 * `components/` | Reusable UI and animation components
 * `sections/` | Page-level sections grouped by route/domain
@@ -65,6 +69,8 @@
 | `/Resume` | Resume and skills | Uses Matrix wall background |
 | `/Contact` | Contact form | Posts to external contact backend |
 | `/projects/[slug]` | Case study detail pages | Statically generated from `data/projects.ts` |
+| `/blog` | Blog index | Added in Phase 3; reads from `content/blog/` MDX |
+| `/blog/[slug]` | Blog post detail | Added in Phase 3; MDX-rendered article |
 
 **Future route preference:** Prefer lowercase routes for new pages such as `/blog` and `/blog/[slug]`. Existing capitalized routes can remain until a routing cleanup pass.
 
@@ -96,17 +102,19 @@
 | `challenges` | `string[]` |
 | `impact` | `string[]` |
 
+### MDX Frontmatter Schema — `content/blog/*.mdx`
+| Field | Type | Purpose |
+|-------|------|---------|
+| `title` | `string` | Post display title |
+| `slug` | `string` | URL segment for `/blog/[slug]` |
+| `date` | `string` | ISO date string for ordering |
+| `tags` | `string[]` | Tag pills on blog index and post header |
+| `summary` | `string` | Used on blog index cards |
+| `published` | `boolean` | Draft/publish toggle; unpublished posts excluded from build |
+
 ### Current projects in `data/projects.ts`
 **Professional (Designare Solutions tenure):** Deepstory, Stay Leisurely, Lyfsum
 **Personal:** Image Generation Model, Similar Image Recommender, Image Description Generator, Motion Detection Graph, Private AI Journal OS, Space Invaders Game Engine, Distributed File Retrieval Engine
-
----
-
-## Planned Blog & Project Architecture
-* **Blog Index:** Add `app/blog/page.tsx` with a Matrix-themed but readable list of articles.
-* **Blog Detail:** Add `app/blog/[slug]/page.tsx` for individual posts.
-* **Content Source:** Prefer MDX or structured markdown files under `content/blog/` for authoring technical posts.
-* **Article UI:** Follow the same case study pattern — centered readable column, dark code blocks, green anchor accents, tag pills, and previous/next navigation.
 
 ---
 
@@ -114,7 +122,8 @@
 * **Projects:** ✅ Project data is now fully extracted to `data/projects.ts`. Do not re-inline project data into JSX.
 * **Case Studies:** ✅ All seven projects have full case study content. Adding new projects means adding a new entry to `data/projects.ts` — the Portfolio page and `/projects/[slug]` route update automatically.
 * **Resume Data:** Education, work experience, and skills can later be data-driven to reduce repeated JSX. All three major professional projects belong under the single Designare Solutions tenure. The summary should position Prithvi generally as a Master's student in Computer Science without over-specializing.
-* **Blog Posts:** Blog content should not be hardcoded in route files once there are more than one or two posts.
+* **Blog Posts:** MDX files under `content/blog/` are the authoring surface. Adding a new post means creating a new `.mdx` file and pushing — Vercel redeploys automatically. Never hardcode post content inside route files.
+* **Authoring Workflow (Git-as-CMS):** New project → add entry to `data/projects.ts`. New blog post → create `content/blog/[slug].mdx` with frontmatter and push. No admin panel, no external CMS dependency, no additional infra cost.
 
 ---
 
@@ -127,8 +136,9 @@
 6. **Nested SMTP Repo:** `smtp-backend/` is a nested Git repository with its own dependencies and deployment lifecycle; root-level Git commands may not report its changes.
 7. **Avoid Heavy Homepage Bloat:** Keep the first screen focused on identity and clear calls to action.
 8. **Mobile Responsiveness:** All new cards, blog lists, and article layouts must fit small screens without text overlap.
-9. **Single Source of Truth:** All project data lives in `data/projects.ts`. Never duplicate project metadata into route files or JSX.
+9. **Single Source of Truth:** All structured project metadata lives in `data/projects.ts`. Blog and supplementary narrative content lives in `content/`. Never duplicate across both.
 10. **Canvas Performance Architecture:** `MatrixRain.tsx` must rely on a strictly hard-paced Game Loop. Use pure `requestAnimationFrame` timestamps (no `performance.now()`), pre-calculated color batching (no `rgba` alpha-blending overhead), and Dynamic Delta Clamping to protect against Negative Delta Drift and Tab-Switch stutters.
+11. **MDX Build-Time Only:** All MDX content is read at build time via `lib/mdx.ts`. Do not fetch MDX at runtime or from an external endpoint. `published: false` posts must be filtered before `generateStaticParams`.
 
 ---
 
@@ -153,8 +163,8 @@
 * **Contact Backend Migration Check:** `smtp-backend/server.js` has been changed to Office365 SMTP, but deployed Vercel environment variables and redeployment status must be verified if contact mail still routes to Gmail.
 
 ### Not Started
+* Phase 2.7: Git-as-CMS Foundation.
 * Phase 3: Blog Foundation.
-* `/blog` route and Markdown/MDX content pipeline.
 * Open Graph/social sharing image setup.
 * Stronger SEO metadata for all pages.
 
@@ -167,11 +177,29 @@
 * Track down and eliminate the persistent rapid tab-switch stutter.
 * Ensure the Dynamic Delta Clamp handles all `dt` overflow cleanly without leaving chaotic accumulator remainders.
 
+---
+
+**Phase 2.7: Git-as-CMS Foundation** *(Bridge — must complete before Phase 3)*
+
+*Why this phase exists:* Phase 3 introduces the `/blog` route and MDX posts. Without a content layer in place first, the blog route would have no files to read and `generateStaticParams` would return an empty array. This phase establishes the directory structure, parsing utilities, and frontmatter schema that Phase 3 and all future content work will depend on. It is deliberately scoped to infrastructure only — no UI changes, no new routes.
+
+**Goals:**
+* Establish `content/blog/` and `content/projects/` as the canonical content directories.
+* Write `lib/mdx.ts` with `getAllPosts()`, `getPostBySlug()`, and frontmatter extraction using `gray-matter` and `next-mdx-remote` (or `mdx-bundler`).
+* Define and document the MDX frontmatter schema (title, slug, date, tags, summary, published).
+* Add `.mdx` linting / type-checking to prevent malformed frontmatter from silently breaking the build.
+* Author the first draft blog post or project narrative as an MDX file to validate the pipeline end-to-end.
+* Update `.gitignore` and Vercel ignore rules if needed (`.mdx` files should always be tracked).
+* No new routes, no new UI — this phase is purely the content infrastructure layer that Phase 3 builds on top of.
+
+---
+
 **Phase 3: Blog Foundation**
-* Add `/blog` and `/blog/[slug]` routes.
-* Add `content/blog/` with first markdown or MDX posts.
+* Add `/blog` and `/blog/[slug]` routes, powered by `lib/mdx.ts` from Phase 2.7.
 * Build a reusable `BlogCard` component consistent with the existing card shape language.
 * Follow the case study readability pattern for article pages (scanline/vignette, no Matrix rain behind text).
+* Support tag filtering on the blog index.
+* Wire previous/next navigation between posts.
 
 **Phase 4: SEO And Sharing**
 * Add better site metadata and page-level metadata.
@@ -189,10 +217,12 @@
 * Preserve the Matrix-inspired brand unless the user explicitly asks for a redesign.
 * Prefer small, theme-consistent improvements over broad visual rewrites.
 * Use existing components and section organization before introducing new patterns.
-* **All project data lives in `data/projects.ts`.** Do not re-inline project data into page files.
+* **All structured project data lives in `data/projects.ts`.** Do not re-inline project data into page files.
+* **All blog and supplementary narrative content lives in `content/`.** Do not hardcode post content in route files.
 * When adding a new project, add it to `data/projects.ts` only — Portfolio and case study routes update automatically.
-* The case study page (`app/projects/[slug]/page.tsx`) is the established template for long-form readable pages. Reuse its layout pattern.
-* Keep blog and project content data-driven where possible.
+* When adding a new blog post, create a new MDX file in `content/blog/` with the correct frontmatter schema — the `/blog` index and `/blog/[slug]` routes update automatically.
+* The case study page (`app/projects/[slug]/page.tsx`) is the established template for long-form readable pages. Reuse its layout pattern for blog posts.
+* `lib/mdx.ts` is the single point of entry for all MDX parsing. Do not write ad-hoc frontmatter parsing in route files.
 
 ---
 
@@ -215,3 +245,8 @@
   * Removed `performance.now()` in favor of a pure RAF timestamp to fix "Negative Delta Drift" when utilizing the `visibilitychange` API.
   * Implemented a **Dynamic Delta Clamp** (`if (dt > frameInterval) dt = frameInterval`) to catch huge `dt` jumps from tab sleeping.
 * **Current Blockers:** A micro-stutter still persists on rapid tab switches despite the dynamic clamp logic. The rendering loop requires further analysis to prevent the engine from freezing on rapid context swaps. This logic is being treated as a **Pre-Phase 3** blocking step.
+
+### 2026-05-15 — CMS Strategy Decision
+* Evaluated headless CMS options (Sanity, Contentful, Strapi via DigitalOcean credits from GitHub Student Developer Pack).
+* **Decision: Git-as-CMS.** MDX files under `content/blog/` and `content/projects/` will serve as the authoring surface. Rationale: zero infra cost, version-controlled history, push-to-deploy workflow via Vercel, no external service dependency, and the existing case study architecture already demonstrates the pattern. `data/projects.ts` continues to own structured project metadata; MDX owns prose and long-form narrative content.
+* Phase 2.7 added to roadmap as a bridge phase before Phase 3 to establish the content infrastructure layer cleanly.
