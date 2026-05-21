@@ -60,7 +60,7 @@ export default function Page() {
                                     Message sent{senderName.current ? `, ${senderName.current.split(' ')[0]}` : ''}!
                                 </h2>
                                 <p className="text-sm leading-relaxed text-white/60">
-                                    Thanks for reaching out. I'll get back to you as soon as possible.
+                                    {`Thanks for reaching out. I'll get back to you as soon as possible.`}
                                 </p>
                             </div>
 

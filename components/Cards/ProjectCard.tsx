@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FC, useRef, useState } from "react";
 import { Pill } from "./Pill";
+import Image from "next/image";
 
 interface ProjectCardProps {
   link: string;
@@ -107,9 +108,10 @@ export const ProjectCard: FC<ProjectCardProps> = ({
         >
           {/* Image zone — takes all remaining space above the panel */}
           <div className="relative flex-1 overflow-hidden">
-            <img
+            <Image
               src={img}
               alt={title}
+              fill
               className="h-full w-full object-cover object-center"
             />
             {/* Soft gradient bleed into the panel below */}
@@ -145,9 +147,10 @@ export const ProjectCard: FC<ProjectCardProps> = ({
           }}
         >
           <div className="relative h-28 overflow-hidden flex-shrink-0">
-            <img
+            <Image
               src={img}
               alt={title}
+              fill
               loading="eager"  
               className="h-full w-full object-cover object-center"
             />
